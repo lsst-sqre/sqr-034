@@ -77,39 +77,34 @@ The Kafka Connect manager
 Another addition to the EFD architecture was the `Kafka Connect manager`_. The Kafka Connect manager is the component responsible for managing the Kafka Connect REST interface. It is used to deploy the different connectors in the EFD and can automatically update the connector configuration when new topics are created in the Kafka broker.
 
 
-Data Replication
-================
+Data replication and fault tolerance
+====================================
 
 The EFD uses Kafka to replicate data from the Summit (primary site) to the LDF (secondary site). The `Confluent Replicator`_ connector is the component responsible for that. In the EFD setup, the Replicator connector runs in one direction copying data from the primary site to the secondary site.
 
 New topics in the Kafka brokers at the Summit are automatically detected and replicated to the Kafka brokers at the LDF. As throughput increases, the Replicator automatically scales to accommodate the increased load. The Replicator also synchronizes the Schema registry across the two sites, which further protects the EFD against data loss.
 
-Note that in this setup we have an InfluxDB consumer at the Summit that reads data just from the primary site, and the Aggregator, InfluxDB, Oracle and Parquet consumers at the LDF that read data just from the secondary site. There is no failover mechanism for a consumer in the primary (secondary) site to read data from the secondary (primary) site. Similarly, the SAL Kafka producer writes data to just the primary site.
+Note that in the present setup we have an InfluxDB consumer that reads data from the Kafka cluster at the primary site, and the Aggregator, InfluxDB, Oracle and Parquet consumers that read data from the Kafka cluster at the secondary site. Within the Kafka cluster we have fault tolerance by replicating the Kafka topics across the brokers. That's done by SAL Kafka producer creating topics with a replication factor of 3 by default. If one of the InfluxDB instances die, we still can connect to the other InfluxDB instance for real-time analysis of the EFD data. However, note that there's no failover mechanism for a consumer in the primary (secondary) site to read data from the secondary (primary) site. Similarly, the SAL Kafka producer writes data to just the primary site.
 
 In summary, the data replication enables long-term storage of the EFD data at the LDF and also provides a live backup of the EFD data in the Summit instance (see :ref:`retention-policy`).
 
 
-Long-term storage options at the LDF
-====================================
+.. _retention-policy:
+Downsampling and data retention
+===============================
 
-.. Using multiple connectors at the LFD to write the EFD data to Parquet, Oracle and InfluxDB also provide a backup for the raw and aggregated streams.
+The EFD writes thousands of topics with frequencies ranging from 1Hz to 100Hz. Querying the raw EFD data on large time windows can be quite painful, especially at the Summit with limited computing resources.
+
+A natural solution is to downsample the raw data and store one or two versions of low-resolution data for extended periods. In InfluxDB, it is possible to configure multiple retention policies. For instance, at the Summit we can have 1 week of raw data, 1 month of an intermediate resolution version, and 1 year of a low resolution version. The retention policy is such that data older than the retention period is automatically deleted. The result is a moving time window on the most recent data in each case. Downsampling is efficiently done inside InfluxDB using Flux tasks that can be scheduled during daytime.  Similar retention policies at the LDF can be configure so that we can query the data efficiently over extended periods in InlfuxDB.
+
+Real-time analysis of the EFD data might include statistical models for anomaly detection and forecasting. For example, InfluxDB implements a `built-in multiplicative Holt-Winter's <https://www.influxdata.com/blog/how-to-use-influxdbs-holt-winters-function-for-predictions/>`_ function to generate predictions on time series data. At the Summit, if we store 1 month of raw EFD data, that's roughly 1% of the data collected over the 10-years survey. If that's sufficient to build a statistical model or not depends on the long term trends and seasonality of the time-series we are analyzing. An interesting possibility of the present EFD architecture is to build the statistical models at the LDF where we have the raw data stored for longer periods and apply the models at the Summit when configuring alerts.
+
 
 The Aggregator
---------------
+==============
 
-.. _retention-policy:
-
-EFD data retention policy
-=========================
-
-The EFD data retention policy defines the period in which the data is retained in each component of the EFD. It also provides guidelines for sizing the hardware to store and query the data.
-
-Both Kafka clusters at the Summit and the LDF use the default retention period of one week for the brokers.
-
-At the Summit, InfluxDB retention period is one month, data older than one month do not seem useful for real-time analysis.
-
-At LDF, the retention period for InfluxDB, Oracle, and Parquet files is infinite, which means it preserves the data for the lifetime of the experiment.
-
+Long-term storage at the LDF
+============================
 
 
 References
