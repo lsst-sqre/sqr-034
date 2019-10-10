@@ -103,8 +103,26 @@ Real-time analysis of the EFD data might include statistical models for anomaly 
 The Aggregator
 ==============
 
-Long-term storage at the LDF
-============================
+As proposed in :dmtn:`082` :cite:`DMTN-082`, the Science Platform users are generally interested in telemetry data at a frequency closer to the cadence of the observations. It proposes that "all telemetry topics sampled with a frequency higher than 1Hz are (1) downsampled at 1Hz and (2) aggregated to 1Hz using general statistics like ``min``, ``max``, ``mean``, ``median`` ``stdev``".  Commands and event topics should not be aggregated as they are typically low-frequency and can be read directly from the raw EFD data sources.
+
+In addition, the aggregator should resample the telemetry topics in a regular time grid to make it easier to correlate them.
+
+The aggregator stream-processor produces a new set of aggregated telemetry topics in Kafka that can be consumed and stored in Parquet, Oracle and InfluxDB. That gives the user multiple options to combine the aggregated telemetry with the exposure table which resides primarily in the Oracle database:
+
+* inside the Science Platform notebook environment using Pandas dataframes after querying the exposure table and reading the telemetry data from one of the sources above;
+
+* inside the Oracle database joining the exposure and the telemetry tables using SQL;
+
+* Inside InfluxDB using Flux ``sql.from()`` function to retrieve data from the exposure table.
+
+All these "joins" are based on timestamps.
+
+An interesting option for implementing the Aggregator is `Faust`_, a Python asyncio stream processing library. Faust supports `Avro serialization <https://github.com/marcosschroh/faust-docker-compose-example#avro-schemas-custom-codecs-and-serializers>`_ and multiple instances of a Faust worker can be started independently to distribute stream processing across nodes or CPU cores.
+
+
+Options for long-term storage at the LDF
+========================================
+
 
 
 References
@@ -121,7 +139,8 @@ References
 .. _Service Abstraction Layer: https://docushare.lsstcorp.org/docushare/dsweb/Get/Document-21527
 .. _SAL Kafka: https://ts-salkafka.lsst.io/
 .. _Kafka Connect manager: https://kafka-connect-manager.lsst.io/
-.. _Confluent Replicator:
+.. _Confluent Replicator: https://docs.confluent.io/current/connect/kafka-connect-replicator/index.html
+.. _Faust: https://faust.readthedocs.io/en/latest/index.html
 .. _InfluxData stack: https://docs.influxdata.com/influxdb/v1.7/
 .. _Chronograf: https://docs.influxdata.com/chronograf/v1.7/
 .. _Kapacitor: https://docs.influxdata.com/kapacitor/v1.5/
