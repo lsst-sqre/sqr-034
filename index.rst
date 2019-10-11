@@ -90,6 +90,7 @@ In summary, the data replication enables long-term storage of the EFD data at th
 
 
 .. _retention-policy:
+
 Downsampling and data retention
 ===============================
 
@@ -99,17 +100,18 @@ A natural solution is to downsample the raw data and store one or two versions o
 
 Real-time analysis of the EFD data might include statistical models for anomaly detection and forecasting. For example, InfluxDB implements a `built-in multiplicative Holt-Winter's <https://www.influxdata.com/blog/how-to-use-influxdbs-holt-winters-function-for-predictions/>`_ function to generate predictions on time series data. At the Summit, if we store 1 month of raw EFD data, that's roughly 1% of the data collected over the 10-years survey. If that's sufficient to build a statistical model or not depends on the long term trends and seasonality of the time-series we are analyzing. An interesting possibility of the present EFD architecture is to build the statistical models at the LDF where we have the raw data stored for longer periods and apply the models at the Summit when configuring alerts.
 
+.. _aggregator:
 
 The Aggregator
 ==============
 
-As proposed in :dmtn:`082` :cite:`DMTN-082`, the Science Platform users are generally interested in telemetry data at a frequency closer to the cadence of the observations. It proposes that "all telemetry topics sampled with a frequency higher than 1Hz are (1) downsampled at 1Hz and (2) aggregated to 1Hz using general statistics like ``min``, ``max``, ``mean``, ``median`` ``stdev``".  Commands and event topics should not be aggregated as they are typically low-frequency and can be read directly from the raw EFD data sources.
+As proposed in :dmtn:`082` :cite:`DMTN-082`, the LSP users are generally interested in telemetry data at a frequency closer to the cadence of the observations. It proposes that "all telemetry topics sampled with a frequency higher than 1Hz are (1) downsampled at 1Hz and (2) aggregated to 1Hz using general statistics like ``min``, ``max``, ``mean``, ``median`` ``stdev``".  Commands and event topics should not be aggregated as they are typically low-frequency and can be read directly from the raw EFD data sources.
 
 In addition, the aggregator should resample the telemetry topics in a regular time grid to make it easier to correlate them.
 
 The aggregator stream-processor produces a new set of aggregated telemetry topics in Kafka that can be consumed and stored in Parquet, Oracle and InfluxDB. That gives the user multiple options to combine the aggregated telemetry with the exposure table which resides primarily in the Oracle database:
 
-* inside the Science Platform notebook environment using Pandas dataframes after querying the exposure table and reading the telemetry data from one of the sources above;
+* inside the LSP notebook environment using Pandas dataframes after querying the exposure table and reading the telemetry data from one of the sources above;
 
 * inside the Oracle database joining the exposure and the telemetry tables using SQL;
 
@@ -123,6 +125,17 @@ An interesting option for implementing the Aggregator is `Faust`_, a Python asyn
 Options for long-term storage at the LDF
 ========================================
 
+The LSP benefits from accessing data stored in Parquet format, which is compatible with  `Dask`_ used to scale computations across multiple machines. The Confluent Kafka connect storage-cloud connector recently added `support to Parquet on S3 <https://github.com/confluentinc/kafka-connect-storage-cloud/pull/241>`_. From the connector configuration, it is also possible to partition data based on time. We might want to store both the raw EFD data and the aggregated EFD data in Parquet files, which also serves as a cold backup of the EFD data.
+
+We plan on storing the aggregated EFD data in Oracle, which is convenient to make joins with the exposure table as discussed in the :ref:`aggregator` session. The `Kafka Connect JDBC Connector`_ supports Oracle databases through the JDBC driver for Oracle. The JDBC Sink connector automatically creates the destination tables if the ``auto.create`` configuration option is enabled, and can also `perform limited auto-evolution <https://docs.confluent.io/current/connect/kafka-connect-jdbc/sink-connector/index.html#auto-creation-and-auto-evoluton>`_ on the destination tables if the ``auto.evolve`` configuration option is enabled.  An alternative, is to load data to the Oracle database from Parquet files in batch, but then we lose the convenience of creating and evolving the database schema offered by JDBC Sink connector.
+
+For the InfluxDB at the LDF, we can store the raw data for more extended periods than in the Summit. We might consider the InfluxDB enterprise to build an InfluxDB cluster or pay for InfluxDB Cloud. Alternatively, we can have multiple retention policies in InfluxDB and store low-resolution versions of the data for extended periods as discussed in the :ref:`retention-policy` session.
+
+
+Monitoring
+==========
+
+For monitoring the Kafka cluster, we use Prometheus deployed with the Confluent Kafka Helm charts, and eventually, the Confluent Kafka Control Center.  For InfluxDB, we collect system metrics from a different number of Telegraf plugins. We intend to ingest the EFD logs in the logging infrastructure at Summit and the LDF as well.
 
 
 References
@@ -141,6 +154,8 @@ References
 .. _Kafka Connect manager: https://kafka-connect-manager.lsst.io/
 .. _Confluent Replicator: https://docs.confluent.io/current/connect/kafka-connect-replicator/index.html
 .. _Faust: https://faust.readthedocs.io/en/latest/index.html
+.. _Dask: https://dask.org/
+.. _Kafka Connect JDBC Connector:
 .. _InfluxData stack: https://docs.influxdata.com/influxdb/v1.7/
 .. _Chronograf: https://docs.influxdata.com/chronograf/v1.7/
 .. _Kapacitor: https://docs.influxdata.com/kapacitor/v1.5/
