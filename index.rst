@@ -57,9 +57,9 @@ Introduction
 In this technote, we describe new components added to the EFD architecture, data replication from the Summit to the LSST Data Facility (LDF), data storage options for long-term analyses of the EFD data in the LSP, and the EFD data retention policy.
 
 
-.. figure:: /_static/efd_data_flow.png
-   :name: EFD data flow
-   :target: _static/efd_data_flow.png
+.. figure:: /_static/efd_architecture.png
+   :name: EFD architecture with data replication from the Summit to the LDF
+   :target: _static/efd_architecture.png
 
    EFD components at the Summit and LDF.
 
