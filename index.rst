@@ -52,20 +52,29 @@
 
 Introduction
 ============
-:dmtn:`082` :cite:`DMTN-082` presents a proposal to enable real-time analysis of the EFD data in the LSST Science Platform (LSP). :sqr:`029` :cite:`SQR-029` describes a prototype implementation of the EFD based on the `Confluent Kafka Platform`_  and the `InfluxData stack`_ and reports results of live tests with the LSST T&S `Service Abstraction Layer`_ (SAL) including latency characterization and performance evaluation with high-frequency telemetry. :sqr:`031` :cite:`SQR-031` describes the EFD Kubernetes-based deployment using Kubes (k3s), a lightweight Kubernetes, that allowed us to exercise the deployment and operation of the EFD at the Auxiliary Telescope (AT) test stand in Tucson and at the Summit in Chile while we implement the final on-premise deployment platform.
+In :dmtn:`082` :cite:`DMTN-082`, we present the initial architecture to enable real-time analysis of the Engineering Facilities Database (EFD) data in the LSST Science Platform (LSP).
 
-In this technote, we introduce the concept of source EFD for instances deployed at the Summit and Test stands that collect data from the hardware, and aggregator EFD that aggregate data from the source EFDs and is deployed at the LDF. The aggregator EFD is meant to be a single place where scientists connect to perform their analysis. We describe new components added to the EFD architecture, in particular, we discuss data replication from the source EFDs to the aggregator EFD, retention policies, and options for long-term storage of the EFD data.
+In :sqr:`029` :cite:`SQR-029`, we describe the prototype implementation of the EFD based on `Kafka`_  and `InfluxDB`_.  We report results of live tests with the LSST T&S `Service Abstraction Layer`_ (SAL) including latency characterization and performance evaluation with high-frequency telemetry.
+
+Finally, in :sqr:`031` :cite:`SQR-031`, we describe the Kubernetes-based deployment of the EFD using Kubes (k3s), a lightweight Kubernetes, allowing us to use the EFD at the Tucson and NCSA Test stands and at the Summit while we implement the final on-premise deployment platform.
+
+In this technote, we describe the EFD operation with 1) an instance at the Summit to store the data and to enable real-time analysis for observers, and 2) an instance  at LFD that replicates the data from the Summit and store it for long term. The EFD at LDF is meant to be a centralized place where LSST staff can connect and perform their analysis without interfering with the Summit instance. One of the benefits of the present architecture is to make EFD data available at the LDF with latency under 1 second.
 
 .. figure:: /_static/efd_architecture.png
-   :name: Architecture for the source and aggregator EFDs.
+   :name: Data flow from the Summit to the LDF.
    :target: _static/efd_architecture.png
 
-   Architecture for the source and aggregator EFDs.
+   Data flow from the Summit to the LDF.
+
+The main components of the EFD at the Summit are Kafka, InfluxDB, the InfluxDB Sink connector, Chronograf and Kapacitor. Currently, the SAL Kafka producers are not deployed as part of the EFD and are managed by Telescope and Site.
+At LDF, we have in addition the replicator, the aggregator and the connectors to write data to Parquet files and to the Oracle database.
+
+Also, we describe new components added to the EFD architecture, in particular, we discuss data replication, retention policies, and options for long-term storage of the EFD data.
 
 The SAL Kafka producer
 ======================
 
-The `SAL Kafka`_ producer runs only on source EFDs (Summit and test stands) and forward DDS messages from one or more SAL components to Kafka.  For each DDS topic, SAL Kafka introspects the OpenSplice IDL, creates the Avro schema and uploads it to the source Schema registry dynamically. The Kafka brokers cache the Avro serialized messages, and consumers use the Avro schemas created by SAL Kafka to deserialize them.
+The `SAL Kafka`_ producers forward DDS messages from one or more SAL components to Kafka.  For each DDS topic, SAL Kafka introspects the OpenSplice IDL, creates the Avro schema and uploads it to the source Schema registry dynamically. The Kafka brokers cache the Avro serialized messages, and consumers use the Avro schemas created by SAL Kafka to deserialize them.
 
 SAL Kafka was an important addition to the EFD architecture, it decouples the EFD from the SAL XML schemas and introduces Avro as the interface between the DDS middleware and Kafka.
 
@@ -78,15 +87,15 @@ Another addition to the EFD architecture is the `Kafka Connect manager`_. The Ka
 Data replication and fault tolerance
 ====================================
 
-The EFD uses Kafka to replicate data from the source EFDs (primary sites) to the aggregator EFD (secondary site). The `Kafka Connect Replicator source connector`_ is the component responsible for that. In the EFD setup, the Replicator source connector runs in one direction pulling topics from the primary sites to the secondary site.
+The EFD uses Kafka to replicate data from and Summit EFD (primary site) to the LDF EFD (secondary site). The `Kafka Connect Replicator source connector`_ is the component responsible for that. In the EFD setup, the Replicator source connector runs in one direction pulling topics from the primary sites to the secondary site.
 
-New topics and schemas in the source EFDs are automatically detected and replicated to aggregator EFD. As throughput increases, the Replicator automatically scales to accommodate the increased load. By replicating topics and schemas across primary and secondary sites further protects the EFD against data loss.
+New topics and schemas in the Summit EFD are automatically detected and replicated to the LDF EFD. As throughput increases, the Replicator automatically scales to accommodate the increased load. By replicating topics and schemas across primary and secondary sites further protects the EFD against data loss.
 
-In the present setup, consumers at the source EFD only read data from the source EFD and consumers at the aggregator EFD only read data from the aggregator EFD with the exception of the Replicator consumer.  Within the Kafka cluster we have fault tolerance by replicating the Kafka topics across three brokers (default set up). That's done by the SAL Kafka producer creating topics with a replication factor of three.
+In the present setup, consumers at the Summit only read data from the primary site and consumers at LDF only read data from the secondary site, with the exception of the Replicator.  Within the Kafka cluster we have fault tolerance by replicating the Kafka topics across three brokers (default set up). That's done by the SAL Kafka producer creating topics with a replication factor of three.
 
 If the InfluxDB instance in one of the primary sites die, the InfluxDB instance on the secondary site can be used to access the data. However, there's no failover mechanism that automatically connects a consumer to the secondary site.
 
-In summary, the aggregator EFD provides long-term storage and a live backup of the EFD data (see :ref:`retention-policy`).
+In summary, the LDF EFD provides long-term storage and a live backup of the EFD data (see :ref:`retention-policy`).
 
 
 .. _retention-policy:
@@ -98,7 +107,7 @@ The EFD writes thousands of topics with frequencies ranging from 1Hz to 100Hz. Q
 
 A natural solution is to downsample the raw data and store one or two versions of low-resolution data for extended periods. In InfluxDB, it is possible to configure multiple retention policies. For instance, at the primary sites we can have 1 week of raw data, 1 month of an intermediate resolution version of the data, and 1 year of a low resolution version of the data. The retention policy is such that data older than the retention period is automatically deleted. The result is a moving time window on the most recent data in each case. Downsampling is efficiently done inside InfluxDB using Flux tasks that can be scheduled during daytime if necessary.  Similar retention policies at the LDF can be configure so that we can query the data efficiently over extended periods.
 
-Real-time analysis of the EFD data might include statistical models for anomaly detection and forecasting. For example, InfluxDB implements a `built-in multiplicative Holt-Winter's <https://www.influxdata.com/blog/how-to-use-influxdbs-holt-winters-function-for-predictions/>`_ function to generate predictions on time series data. At the Summit, if we store 1 week of raw EFD data, that's roughly 0.2% of the data collected over the 10-years survey. If that's sufficient to build a statistical model or not depends on the long term trends and seasonality of the time-series we are analyzing. An interesting possibility of the present EFD architecture is to build the statistical models at the aggregator EFD where we have the raw data stored for longer periods and apply the models at the primary sites when configuring alerts.
+Real-time analysis of the EFD data might include statistical models for anomaly detection and forecasting. For example, InfluxDB implements a `built-in multiplicative Holt-Winter's <https://www.influxdata.com/blog/how-to-use-influxdbs-holt-winters-function-for-predictions/>`_ function to generate predictions on time series data. At the Summit, if we store 1 week of raw EFD data, that's roughly 0.2% of the data collected over the 10-years survey. If that's sufficient to build a statistical model or not depends on the long term trends and seasonality of the time-series we are analyzing. An interesting possibility of the present EFD architecture is to build the statistical models from historical data at the LDF EFD and apply the models to the Summit EFD when configuring alerts.
 
 .. _aggregator:
 
@@ -129,7 +138,7 @@ The LSP benefits from accessing data stored in Parquet format, which is compatib
 
 We plan on storing the aggregated EFD data in Oracle, which is convenient to make joins with the exposure table as discussed in the :ref:`aggregator` session. The `Kafka Connect JDBC connector`_ supports Oracle databases through the JDBC driver for Oracle. The JDBC Sink connector automatically creates the destination tables if the ``auto.create`` configuration option is enabled, and can also `perform limited auto-evolution <https://docs.confluent.io/current/connect/kafka-connect-jdbc/sink-connector/index.html#auto-creation-and-auto-evoluton>`_ on the destination tables if the ``auto.evolve`` configuration option is enabled.  An alternative, is to load data to the Oracle database from Parquet files in batch, but then we lose the convenience of creating and evolving the database schema offered by JDBC Sink connector.
 
-We can store the raw data for more extended periods in the aggregator EFD than in the source EFDs. We might consider InfluxDB enterprise to build an InfluxDB cluster or even pay for InfluxDB Cloud. Alternatively, we can have multiple retention policies in InfluxDB and store low-resolution versions of the data for extended periods as discussed in the :ref:`retention-policy` session.
+We can store the raw data for more extended periods at LDF than in the Summit. We might consider InfluxDB enterprise to build an InfluxDB cluster or even pay for InfluxDB Cloud. Alternatively, we can have multiple retention policies in InfluxDB and store low-resolution versions of the data for extended periods as discussed in the :ref:`retention-policy` session.
 
 
 Monitoring
@@ -170,8 +179,8 @@ References
   :style: lsst_aa
 
 
-.. _InfluxData: https://www.influxdata.com/
-.. _Confluent Kafka Platform: https://www.confluent.io/
+.. _InfluxDB: https://www.influxdata.com/
+.. _Kafka: https://www.confluent.io/
 .. _Service Abstraction Layer: https://docushare.lsstcorp.org/docushare/dsweb/Get/Document-21527
 .. _SAL Kafka: https://ts-salkafka.lsst.io/
 .. _Kafka Connect manager: https://kafka-connect-manager.lsst.io/
