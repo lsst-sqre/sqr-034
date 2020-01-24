@@ -50,6 +50,64 @@
 
    Describe the EFD architecture, data replication, retention policies, etc
 
+TL;DR
+=====
+
+Summit EFD
+----------
+Instance running at the Summit (Chile).
+
+Intended public: Commissioning and Science Verification teams.
+
+Data at the Summit EFD is also replicated to the LDF EFD to enable project wide access.
+
+Services
+^^^^^^^^
+
+Chronograf: https://chronograf-summit-efd.lsst.codes
+
+InfluxDB: https://influxdb-summit-efd.lsst.codes
+
+Kafka Schema Registry: https://schema-registry-summit-efd.lsst.codes
+
+Kafka Broker: https://kafka-0-summit-efd.lsst.codes
+
+LDF EFD
+-------
+
+(Work in progress)
+
+Tucson test stand EFD
+---------------------
+
+Standalone instance running at the Tucson test stand.
+
+Intended public: T&S
+
+Services
+^^^^^^^^
+
+Chronograf: https://chronograf-tucson-teststand-efd.lsst.codes
+
+InfluxDB: https://influxdb-tucson-teststand-efd.lsst.codes
+
+Kafka Schema Registry: https://schema-registry-tucson-teststand-efd.lsst.codes
+
+Kafka Broker: https://kafka-0-tucson-teststand-efd.lsst.codes
+
+NCSA test stand EFD
+-------------------
+(Work in progress)
+
+Sandbox EFD at Google Cloud Platform
+------------------------------------
+(Work in Progress)
+
+
+Follow ``#com-efd`` at LSSTC Slack for updates.
+
+
+
 Introduction
 ============
 In :dmtn:`082` :cite:`DMTN-082`, we present the initial architecture to enable real-time analysis of the Engineering Facilities Database (EFD) data in the LSST Science Platform (LSP).
