@@ -57,7 +57,7 @@ Summit EFD
 ----------
 Instance running at the Summit (Chile).
 
-Intended public: Commissioning and Science Verification teams.
+Intended audience: Commissioning and Science Verification teams.
 
 Data at the Summit EFD is also replicated to the LDF EFD to enable project wide access.
 
@@ -82,7 +82,7 @@ Tucson test stand EFD
 
 Standalone instance running at the Tucson test stand.
 
-Intended public: T&S
+Intended audience: T&S
 
 Services
 ^^^^^^^^
