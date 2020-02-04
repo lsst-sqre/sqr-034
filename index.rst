@@ -53,6 +53,20 @@
 TL;DR
 =====
 
+The following sections list the EFD instances available, where they run and who is the intended audience for each one.
+
+The main entry point to the EFD is `Chronograf <https://docs.influxdata.com/chronograf/v1.7/>`_, where users can make queries and create dashboards against the EFD.
+
+
+.. note::
+
+  To login to Chronograf, you need to be a member of the GitHub lsst-sqre organization. If you are not, please drop a line on the ``#com-efd`` LSSTC Slack channel.
+
+
+If you are using the `EFD Client <https://efd-client.lsst.io/>`_ to access the data from a notebook, you'll need to `configure the host using the InfluxDB HTTP API <https://efd-client.lsst.io/getting-started.html#authentication-configuration>`_.
+
+The Kafka Schema Registry and the Kafka Broker are used to configure the SAL Kafka producers to send data to and EFD instance.
+
 Summit EFD
 ----------
 Instance running at the Summit (Chile).
@@ -61,16 +75,13 @@ Intended audience: Commissioning and Science Verification teams.
 
 Data at the Summit EFD is also replicated to the LDF EFD to enable project wide access.
 
-Services
-^^^^^^^^
-
 Chronograf: https://chronograf-summit-efd.lsst.codes
 
-InfluxDB: https://influxdb-summit-efd.lsst.codes
+InfluxDB HTTP API: https://influxdb-summit-efd.lsst.codes
 
 Kafka Schema Registry: https://schema-registry-summit-efd.lsst.codes
 
-Kafka Broker: https://kafka-0-summit-efd.lsst.codes
+Kafka Broker: kafka-0-summit-efd.lsst.codes:31090
 
 LDF EFD
 -------
@@ -84,24 +95,44 @@ Standalone instance running at the Tucson test stand.
 
 Intended audience: T&S
 
-Services
-^^^^^^^^
-
 Chronograf: https://chronograf-tucson-teststand-efd.lsst.codes
 
-InfluxDB: https://influxdb-tucson-teststand-efd.lsst.codes
+InfluxDB HTTP API: https://influxdb-tucson-teststand-efd.lsst.codes
 
 Kafka Schema Registry: https://schema-registry-tucson-teststand-efd.lsst.codes
 
-Kafka Broker: https://kafka-0-tucson-teststand-efd.lsst.codes
+Kafka Broker: kafka-0-tucson-teststand-efd.lsst.codes:31090
 
 NCSA test stand EFD
 -------------------
-(Work in progress)
+
+Standalone instance running at the NCSA test stand.
+
+Intended audience: T&S
+
+Chronograf: https://lsst-chronograf-nts-efd.ncsa.illinois.edu
+
+InfluxDB HTTP API: https://lsst-influxdb-nts-efd.ncsa.illinois.edu
+
+Kafka Schema Registry: https://lsst-schema-registry-nts-efd.ncsa.illinois.edu
+
+Kafka Broker: lsst-kafka-0-nts-efd.ncsa.illinois.edu:31090
+
 
 Sandbox EFD at Google Cloud Platform
 ------------------------------------
-(Work in Progress)
+
+Standalone instance running at GCP for sandbox activities.
+
+Intended audience: T&S, DM, any.
+
+Chronograf: https://chronograf-sandbox-efd.lsst.codes
+
+InfluxDB HTTP API: https://influxdb-sandbox-efd.lsst.codes
+
+Schema Registry: https://schema-registry-sandbox-efd.lsst.codes
+
+Kafka Broker: kafka-0-sandbox-efd.lsst.codes:9094
 
 
 Follow ``#com-efd`` at LSSTC Slack for updates.
