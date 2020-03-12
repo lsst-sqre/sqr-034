@@ -147,7 +147,7 @@ In :sqr:`029` :cite:`SQR-029`, we describe the prototype implementation of the E
 
 Finally, in :sqr:`031` :cite:`SQR-031`, we describe the Kubernetes-based deployment of the EFD using Kubes (k3s), a lightweight Kubernetes, allowing us to use the EFD at the Tucson and NCSA Test stands and at the Summit while we implement the final on-premise deployment platform.
 
-In this technote, we describe the EFD operation with 1) an instance at the Summit to store the data and to enable real-time analysis for observers, and 2) an instance  at LFD that replicates the data from the Summit and store it for long term. The EFD at LDF is meant to be a centralized place where LSST staff can connect and perform their analysis without interfering with the Summit instance. One of the benefits of the present architecture is to make EFD data available at the LDF with latency under 1 second.
+In this technote, we describe the EFD operation with 1) an instance at the Summit to store the data and to enable real-time analysis for observers, and 2) an instance at the LDF that replicates the data from the Summit and stores it for the long term. The EFD at LDF is meant to be a centralized place where LSST staff can connect and perform their analysis without interfering with the Summit instance. One of the benefits of the present architecture is makes EFD data available at the LDF with latency under 1 second.
 
 .. figure:: /_static/efd_architecture.png
    :name: Data flow from the Summit to the LDF.
