@@ -83,8 +83,28 @@ Kafka Schema Registry: https://schema-registry-summit-efd.lsst.codes
 
 Kafka Broker: kafka-0-summit-efd.lsst.codes:31090
 
-LDF EFD
--------
+LDF Integration EFD
+--------------------
+
+Instance running at NCSA on the integration cluster.
+
+.. note::
+
+  As of March 20, this instance holds a copy of the Summit EFD data and dashboards and can be used during the shutdown of the Rubin Observatory caused by the COVID-9 outbreak.
+
+Intended audience: Commissioning and Science Verification teams.
+
+Chronograf: https://lsst-chronograf-int-efd.ncsa.illinois.edu
+
+InfluxDB HTTP API: https://lsst-influxdb-int-efd.ncsa.illinois.edu
+
+Kafka Schema Registry: https://lsst-schema-registry-int-efd.ncsa.illinois.edu
+
+Kafka Broker: lsst-kafka-0-int-efd.ncsa.illinois.edu:31090
+
+
+LDF Stable EFD
+---------------
 
 (Work in progress)
 
