@@ -79,14 +79,16 @@ Chronograf: https://chronograf-summit-efd.lsst.codes
 
 InfluxDB HTTP API: https://influxdb-summit-efd.lsst.codes
 
+Kafka Control Center: https://control-center-summit-efd.lsst.codes
+
 Kafka Schema Registry: https://schema-registry-summit-efd.lsst.codes
 
 Kafka Broker: kafka-0-summit-efd.lsst.codes:31090
 
-LDF Integration EFD
+LSP Integration EFD
 --------------------
 
-Instance running at NCSA on the integration cluster.
+Instance running at NCSA on the LSP development cluster.
 
 .. note::
 
@@ -98,15 +100,30 @@ Chronograf: https://lsst-chronograf-int-efd.ncsa.illinois.edu
 
 InfluxDB HTTP API: https://lsst-influxdb-int-efd.ncsa.illinois.edu
 
+Kafka Control Center: https://lsst-control-center-int-efd.ncsa.illinois.edu
+
 Kafka Schema Registry: https://lsst-schema-registry-int-efd.ncsa.illinois.edu
 
 Kafka Broker: lsst-kafka-0-int-efd.ncsa.illinois.edu:31090
 
 
-LDF Stable EFD
+LSP Stable EFD
 ---------------
 
-(Work in progress)
+Instance running at NCSA on the LSP production cluster.
+
+Intended audience: Everyone in the project.
+
+Chronograf: https://lsst-chronograf-efd.ncsa.illinois.edu
+
+InfluxDB HTTP API: https://lsst-influxdb-efd.ncsa.illinois.edu
+
+Kafka Control Center: https://lsst-control-center-efd.ncsa.illinois.edu
+
+Kafka Schema Registry: https://lsst-schema-registry-efd.ncsa.illinois.edu
+
+Kafka Broker: lsst-kafka-0-efd.ncsa.illinois.edu:31090
+
 
 Tucson test stand EFD
 ---------------------
