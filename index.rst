@@ -291,7 +291,7 @@ An example of configuration for the Replicator that includes topic and schema re
    :name: Set up for testing the replicator connector.
    :target: _static/replicator_connector.png
 
-Note That Kafka Connect ``bootstrap.servers`` configuration must include the URL of the destination Kafka cluster and that the destination Schema Registry must be in IMPORT mode. To initialize the destination Schema Registry to IMPORT mode, first set ``mode.mutability=True`` in the configuration and make sure the destination Schema Registry is empty.
+Note That Kafka Connect ``bootstrap.servers`` configuration must include the URL of the destination Kafka cluster and that the destination Schema Registry must be in IMPORT mode. To initialize the destination Schema Registry to IMPORT mode, first set ``mode.mutability=True`` in the configuration and make sure the destination Schema Registry is empty. See `schema migration configuration <https://docs.confluent.io/current/schema-registry/installation/migrate.html#id1>`_ with the Replicator connector for details.
 
 Confluent's recommendation is to deploy the Replicator source connector at the destination cluster (remote consuming). However, in our current set up the Summit EFD and Tucson test stand EFD are behind the NOAO VPN. We successfuly deployed the Replicator source connector at the source clusters (remote producing). We have tested the later set up to replicate data from the Summit EFD and Tucson test stand EFD to our EFD instance running on Google Cloud.  Another good practice is to have a separate Kafka Connect deployment for the Replicator source connector, to isolate this connector from other connectors running in the cluster.
 
