@@ -85,6 +85,25 @@ Kafka Schema Registry: https://schema-registry-summit-efd.lsst.codes
 
 Kafka Broker: kafka-0-summit-efd.lsst.codes:31090
 
+Base EFD
+--------
+
+Instance running at the Base facility (Chile).
+
+Intended audience: Commissioning and Science Verification teams.
+
+The plan is to have replication from the summit to the base and from the base to LDF working soon.
+
+Chronograf: https://chronograf-base-efd.lsst.codes
+
+InfluxDB HTTP API: https://influxdb-base-efd.lsst.codes
+
+Kafka Control Center: https://control-center-base-efd.lsst.codes
+
+Kafka Schema Registry: https://schema-registry-base-efd.lsst.codes
+
+Kafka Broker: kafka-0-base-efd.lsst.codes:31090
+
 LSP Integration EFD
 --------------------
 
