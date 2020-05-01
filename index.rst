@@ -102,7 +102,7 @@ Kafka Control Center: https://control-center-base-efd.lsst.codes
 
 Kafka Schema Registry: https://schema-registry-base-efd.lsst.codes
 
-Kafka Broker: kafka-0-base-efd.lsst.codes:31090
+Kafka Broker: cp-helm-charts-cp-kafka-headless.cp-helm-charts:9092
 
 LSP Integration EFD
 --------------------
@@ -123,8 +123,7 @@ Kafka Control Center: https://lsst-control-center-int-efd.ncsa.illinois.edu
 
 Kafka Schema Registry: https://lsst-schema-registry-int-efd.ncsa.illinois.edu
 
-Kafka Broker: lsst-kafka-0-int-efd.ncsa.illinois.edu:31090
-
+Kafka Broker:  cp-helm-charts-cp-kafka-headless.cp-helm-charts:9092
 
 LSP Stable EFD
 ---------------
@@ -141,8 +140,7 @@ Kafka Control Center: https://lsst-control-center-efd.ncsa.illinois.edu
 
 Kafka Schema Registry: https://lsst-schema-registry-efd.ncsa.illinois.edu
 
-Kafka Broker: lsst-kafka-0-efd.ncsa.illinois.edu:31090
-
+Kafka Broker: cp-helm-charts-cp-kafka-headless.cp-helm-charts:9092
 
 Tucson test stand EFD
 ---------------------
@@ -188,7 +186,7 @@ InfluxDB HTTP API: https://influxdb-sandbox-efd.lsst.codes
 
 Schema Registry: https://schema-registry-sandbox-efd.lsst.codes
 
-Kafka Broker: kafka-0-sandbox-efd.lsst.codes:9094
+Kafka Broker: cp-helm-charts-cp-kafka-headless.cp-helm-charts:9092
 
 
 Follow ``#com-efd`` at LSSTC Slack for updates.
