@@ -44,12 +44,6 @@
 
 .. TODO: Delete the note below before merging new content to the master branch.
 
-.. note::
-
-   **This technote is not yet published.**
-
-   Describe the EFD architecture, data replication, retention policies, etc
-
 Endpoints for EFD deployments
 =============================
 
