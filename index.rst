@@ -224,7 +224,7 @@ Consumers at the Summit only read data from the primary site and consumers at th
 
 If the InfluxDB instance in one of the primary sites dies, the InfluxDB instance on the secondary site can be used to access the data. However, there's no failover mechanism that automatically connects a consumer to the secondary site.
 
-In summary, the LDF EFD provides long-term storage and a live backup of the EFD data (see :ref:`retention-policy`).
+In summary, the LDF EFD provides long-term storage and a live backup of the EFD data (see the folowing section for details).
 
 
 .. _retention-policy:
