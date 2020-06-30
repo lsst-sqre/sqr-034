@@ -197,6 +197,8 @@ In this technote, we describe the EFD operation with 1) an instance at the Summi
 
 The main components of the EFD at the Summit are Kafka, InfluxDB, the InfluxDB Sink connector, Chronograf and Kapacitor. Currently, the SAL Kafka producers are not deployed as part of the EFD and are managed by the Telescope and Site team.
 At the LDF, we also have the replicator, the aggregator and the connectors to write data to Parquet files and to a traditional RDBMS.
+As seen from the endpoints listed in the first section, there are more deployments than simply the Summit and the LDF for various reasons.
+However, those two deployments are the minimum we need to satisfy our requirements.
 
 Also, we describe new components added to the EFD architecture, in particular, we discuss data replication, retention policies, and options for long-term storage of the EFD data.
 
