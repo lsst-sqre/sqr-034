@@ -50,18 +50,19 @@ TL;DR
 
 Quick access to the EFD deployments.
 
-+--------------+---------------------------------------------------+------------------------+
-| **Instance** | **Chronograf**                                    | **EFD Client**         |
-+==============+===================================================+========================+
-| Summit EFD   | https://chronograf-summit-efd.lsst.codes          | ``summit_efd``         |
-+--------------+---------------------------------------------------+------------------------+
-| NTS EFD      | https://lsst-chronograf-nts-efd.ncsa.illinois.edu | ``ncsa_teststand_efd`` |
-+--------------+---------------------------------------------------+------------------------+
-| LDF EFD      | https://lsst-chronograf-efd.ncsa.illinois.edu     | ``ldf_stable_efd``     |
-+--------------+---------------------------------------------------+------------------------+
-| Base EFD     | https://chronograf-base-efd.lsst.codes            | ``base_efd``           |
-+--------------+---------------------------------------------------+------------------------+
-
++------------------+-----------------------------------------------------------+--------------------------+
+| **Instance** .   | **Chronograf**                                            | **EFD Client**           |
++==================+===========================================================+==========================+
+| Summit EFD       | https://chronograf-summit-efd.lsst.codes                  | ``summit_efd``           |
++------------------+-----------------------------------------------------------+--------------------------+
+| NTS EFD          | https://lsst-chronograf-nts-efd.ncsa.illinois.edu         | ``ncsa_teststand_efd``   |
++------------------+-----------------------------------------------------------+--------------------------+
+| Tucson Teststand | https://chronograf-tucson-teststand-efd.lsst.codes        | ``tucson_teststand_efd`` |
++------------------+-----------------------------------------------------------+--------------------------+
+| LDF EFD          | https://lsst-chronograf-efd.ncsa.illinois.edu             | ``ldf_stable_efd``       |
++------------------+-----------------------------------------------------------+--------------------------+
+| Base EFD         | https://chronograf-base-efd.lsst.codes                    | ``base_efd``             |
++------------------+-----------------------------------------------------------+--------------------------+
 
 .. note::
 
@@ -102,7 +103,7 @@ Intended audience: Commissioning and Science Verification teams.
 NTS EFD
 -------
 
-Standalone instance running at the NCSA TestStand.
+Standalone instance running at the NCSA Test Stand.
 
 Intended audience: Telescope and Site team
 
@@ -111,6 +112,19 @@ Intended audience: Telescope and Site team
 - Schema Registry: ``https://lsst-schema-registry-nts-efd.ncsa.illinois.edu``
 - Kafka Broker: ``cp-helm-charts-cp-kafka-headless.cp-helm-charts:9092``
 - Kafdrop UI: ``https://lsst-kafka-0-nts-efd.ncsa.illinois.edu``
+
+Tucson TestStand EFD
+--------------------
+
+Standalone instance running at the Tucson Test Stand.
+
+Intended audience: Telescope and Site team.
+
+- Chronograf: ``https://chronograf-tucson-teststand-efd.lsst.codes``
+- InfluxDB HTTP API: ``https://influxdb-tucson-teststand-efd.lsst.codes``
+- Schema Registry: ``https://schema-registry-tucson-teststand-efd.lsst.codes``
+- Kafka Broker: ``cp-helm-charts-cp-kafka-headless.cp-helm-charts:9092``
+- Kafdrop UI: ``https://kafdrop-tucson-teststand-efd.lsst.codes``
 
 .. _LDF EFD:
 
@@ -152,19 +166,6 @@ Intended audience: Commissioning and Science Verification teams.
 - Confluent Schema Registry: ``https://schema-registry-base-efd.lsst.codes``
 - Kafka Broker: ``cp-helm-charts-cp-kafka-headless.cp-helm-charts:9092``
 - Kafdrop UI: ``https://kafdrop-base-efd.lsst.codes``
-
-
-Tucson TestStand EFD
---------------------
-
-Standalone instance running at the Tucson TestStand. Not being used at the moment.
-
-Intended audience: Telescope and Site team.
-
-- Chronograf: ``https://chronograf-tucson-teststand-efd.lsst.codes``
-- InfluxDB HTTP API: ``https://influxdb-tucson-teststand-efd.lsst.codes``
-- Confluent Schema Registry: ``https://schema-registry-tucson-teststand-efd.lsst.codes``
-- Kafka Broker: ``cp-helm-charts-cp-kafka-headless.cp-helm-charts:9092``
 
 
 Sandbox EFD
