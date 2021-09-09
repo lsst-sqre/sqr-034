@@ -50,19 +50,19 @@ TL;DR
 
 Quick access to the EFD deployments.
 
-+------------------+-----------------------------------------------------------+--------------------------+
-| **Instance** .   | **Chronograf**                                            | **EFD Client**           |
-+==================+===========================================================+==========================+
-| Summit EFD       | https://chronograf-summit-efd.lsst.codes                  | ``summit_efd``           |
-+------------------+-----------------------------------------------------------+--------------------------+
-| NTS EFD          | https://lsst-chronograf-nts-efd.ncsa.illinois.edu         | ``ncsa_teststand_efd``   |
-+------------------+-----------------------------------------------------------+--------------------------+
-| Tucson Teststand | https://chronograf-tucson-teststand-efd.lsst.codes        | ``tucson_teststand_efd`` |
-+------------------+-----------------------------------------------------------+--------------------------+
-| LDF EFD          | https://lsst-chronograf-efd.ncsa.illinois.edu             | ``ldf_stable_efd``       |
-+------------------+-----------------------------------------------------------+--------------------------+
-| Base EFD         | https://chronograf-base-efd.lsst.codes                    | ``base_efd``             |
-+------------------+-----------------------------------------------------------+--------------------------+
++-----------------------+-----------------------------------------------------------+--------------------------+
+| **Instance**          | **Chronograf**                                            | **EFD Client**           |
++=======================+===========================================================+==========================+
+| Summit EFD            | https://chronograf-summit-efd.lsst.codes                  | ``summit_efd``           |
++-----------------------+-----------------------------------------------------------+--------------------------+
+| NTS EFD               | https://lsst-chronograf-nts-efd.ncsa.illinois.edu         | ``ncsa_teststand_efd``   |
++-----------------------+-----------------------------------------------------------+--------------------------+
+| Tucson Test Stand EFD | https://chronograf-tucson-teststand-efd.lsst.codes        | ``tucson_teststand_efd`` |
++-----------------------+-----------------------------------------------------------+--------------------------+
+| LDF EFD               | https://lsst-chronograf-efd.ncsa.illinois.edu             | ``ldf_stable_efd``       |
++-----------------------+-----------------------------------------------------------+--------------------------+
+| Base EFD              | https://chronograf-base-efd.lsst.codes                    | ``base_efd``             |
++-----------------------+-----------------------------------------------------------+--------------------------+
 
 .. note::
 
@@ -113,8 +113,8 @@ Intended audience: Telescope and Site team
 - Kafka Broker: ``cp-helm-charts-cp-kafka-headless.cp-helm-charts:9092``
 - Kafdrop UI: ``https://lsst-kafka-0-nts-efd.ncsa.illinois.edu``
 
-Tucson TestStand EFD
---------------------
+Tucson Test Stand EFD
+---------------------
 
 Standalone instance running at the Tucson Test Stand.
 
