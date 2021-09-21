@@ -171,16 +171,17 @@ Intended audience: Commissioning and Science Verification teams.
 Sandbox EFD
 -----------
 
-Standalone instance running at Google Cloud Platform for development.
+Standalone instance at Google Cloud Platform for development. Not currently deployed, but can be deployed on demand.
 
 Intended audience: Anyone who needs an EFD environment for development and testing.
 For example, this instance has been used by the T&S team to test SAL Kafka producer deployments.
 
-- Chronograf: ``https://chronograf-sandbox-efd.lsst.codes``
-- InfluxDB HTTP API: ``https://influxdb-sandbox-efd.lsst.codes``
-- Confluent Schema Registry: ``https://schema-registry-sandbox-efd.lsst.codes``
-- Kafka Broker: ``cp-helm-charts-cp-kafka-headless.cp-helm-charts:9092``
-- Kafdrop UI: ``https://kafdrop-sandbox-efd.lsst.codes``
+..
+  - Chronograf: ``https://chronograf-sandbox-efd.lsst.codes``
+  - InfluxDB HTTP API: ``https://influxdb-sandbox-efd.lsst.codes``
+  - Confluent Schema Registry: ``https://schema-registry-sandbox-efd.lsst.codes``
+  - Kafka Broker: ``cp-helm-charts-cp-kafka-headless.cp-helm-charts:9092``
+  - Kafdrop UI: ``https://kafdrop-sandbox-efd.lsst.codes``
 
 
 Introduction
