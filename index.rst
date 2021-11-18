@@ -53,7 +53,7 @@ Quick access to the EFD deployments.
 +-----------------------+-----------------------------------------------------------+--------------------------+
 | **Instance**          | **Chronograf**                                            | **EFD Client**           |
 +=======================+===========================================================+==========================+
-| Summit EFD            | https://chronograf-summit-efd.lsst.codes                  | ``summit_efd``           |
+| Summit EFD            | https://chronograf-summit-efd.lsst.codes:30828            | ``summit_efd``           |
 +-----------------------+-----------------------------------------------------------+--------------------------+
 | NTS EFD               | https://lsst-chronograf-nts-efd.ncsa.illinois.edu         | ``ncsa_teststand_efd``   |
 +-----------------------+-----------------------------------------------------------+--------------------------+
@@ -89,11 +89,11 @@ Instance running at the Summit (Chile). The Summit EFD data is also replicated t
 
 Intended audience: Commissioning and Science Verification teams.
 
-- Chronograf: ``https://chronograf-summit-efd.lsst.codes``
-- InfluxDB HTTP API: ``https://influxdb-summit-efd.lsst.codes``
-- Schema Registry: ``https://schema-registry-summit-efd.lsst.codes``
+- Chronograf: ``https://chronograf-summit-efd.lsst.codes:30828``
+- InfluxDB HTTP API: ``https://influxdb-summit-efd.lsst.codes:30828``
+- Schema Registry: ``https://schema-registry-summit-efd.lsst.codes:30828``
 - Kafka Broker: ``kafka-0-summit-efd.lsst.codes:31090``
-- Kafdrop UI: ``https://kafdrop-summit-efd.lsst.codes``
+- Kafdrop UI: ``https://kafdrop-summit-efd.lsst.codes:30828``
 
 .. note::
 
