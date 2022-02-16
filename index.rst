@@ -55,8 +55,6 @@ Quick access to the EFD deployments.
 +=======================+===========================================================+==========================+
 | Summit EFD            | https://chronograf-summit-efd.lsst.codes:30828            | ``summit_efd``           |
 +-----------------------+-----------------------------------------------------------+--------------------------+
-| NTS EFD               | https://lsst-chronograf-nts-efd.ncsa.illinois.edu         | ``ncsa_teststand_efd``   |
-+-----------------------+-----------------------------------------------------------+--------------------------+
 | Tucson Test Stand EFD | https://chronograf-tucson-teststand-efd.lsst.codes        | ``tucson_teststand_efd`` |
 +-----------------------+-----------------------------------------------------------+--------------------------+
 | LDF EFD               | https://lsst-chronograf-efd.ncsa.illinois.edu             | ``ldf_stable_efd``       |
@@ -99,19 +97,6 @@ Intended audience: Commissioning and Science Verification teams.
 
   When deploying the SAL Kafka producers on Kubernetes use the internal address for the Kafka broker: ``cp-helm-charts-cp-kafka-headless.cp-helm-charts:9092``.
 
-
-NTS EFD
--------
-
-Standalone instance running at the NCSA Test Stand.
-
-Intended audience: Telescope and Site team
-
-- Chronograf: ``https://lsst-chronograf-nts-efd.ncsa.illinois.edu``
-- InfluxDB HTTP API: ``https://lsst-influxdb-nts-efd.ncsa.illinois.edu``
-- Schema Registry: ``https://lsst-schema-registry-nts-efd.ncsa.illinois.edu``
-- Kafka Broker: ``cp-helm-charts-cp-kafka-headless.cp-helm-charts:9092``
-- Kafdrop UI: ``https://lsst-kafka-0-nts-efd.ncsa.illinois.edu``
 
 Tucson Test Stand EFD
 ---------------------
