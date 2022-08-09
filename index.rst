@@ -48,27 +48,27 @@
 TL;DR
 =====
 
-Quick access to the EFD deployments.
+Quick access to EFD data.
 
-+-----------------------+-----------------------------------------------------------+--------------------------+
-| **Instance**          | **Chronograf**                                            | **EFD Client**           |
-+=======================+===========================================================+==========================+
-| Summit EFD            | https://chronograf-summit-efd.lsst.codes:30828            | ``summit_efd``           |
-+-----------------------+-----------------------------------------------------------+--------------------------+
-| Tucson Test Stand EFD | https://tucson-teststand.lsst.codes/chronograf            | ``tucson_teststand_efd`` |
-+-----------------------+-----------------------------------------------------------+--------------------------+
-| LDF EFD               | https://lsst-chronograf-efd.ncsa.illinois.edu             | ``ldf_stable_efd``       |
-+-----------------------+-----------------------------------------------------------+--------------------------+
-| Base EFD              | https://chronograf-base-efd.lsst.codes                    | ``base_efd``             |
-+-----------------------+-----------------------------------------------------------+--------------------------+
++-------------------------+-----------------------------------------------------------+--------------------------+
+| **Instance**            | **Chronograf UI**                                         | **EFD  Client**          |
++=========================+===========================================================+==========================+
+| Summit                  | https://chronograf-summit-efd.lsst.codes                  | ``summit_efd``           |
++-------------------------+-----------------------------------------------------------+--------------------------+
+| LDF                     | https://lsst-chronograf-efd.ncsa.illinois.edu             | ``ldf_stable_efd``       |
++-------------------------+-----------------------------------------------------------+--------------------------+
+| Tucson Test Stand (TTS) | https://tucson-teststand.lsst.codes/chronograf            | ``tucson_teststand_efd`` |
++-------------------------+-----------------------------------------------------------+--------------------------+
+| Base Test Stand (BTS)   | https://chronograf-base-efd.lsst.codes                    | ``base_efd``             |
++-------------------------+-----------------------------------------------------------+--------------------------+
 
 .. note::
 
   If you need help, please drop a line on the ``#com-square-support`` LSSTC Slack channel.
 
 
-EFD deployments
-===============
+EFD instances
+=============
 
 In this section we describe the EFD instances, their use, and how to connect to them.
 
@@ -80,26 +80,39 @@ Other services available include the InfluxDB HTTP API, Schema Registry, Kafka b
 .. _EFD Client: https://efd-client.lsst.io
 
 
-Summit EFD
-----------
+Summit
+------
 
 Instance running at the Summit (Chile). The Summit EFD data is also replicated to the LDF EFD for project wide access (see :ref:`LDF EFD`).
 
 Intended audience: Commissioning and Science Verification teams.
 
-- Chronograf: ``https://chronograf-summit-efd.lsst.codes:30828``
-- InfluxDB HTTP API: ``https://influxdb-summit-efd.lsst.codes:30828``
-- Schema Registry: ``https://schema-registry-summit-efd.lsst.codes:30828``
+- Chronograf: ``https://chronograf-summit-efd.lsst.codes``
+- InfluxDB HTTP API: ``https://influxdb-summit-efd.lsst.codes``
+- Schema Registry: ``https://schema-registry-summit-efd.lsst.codes`
 - Kafka Broker: ``kafka-0-summit-efd.lsst.codes:31090``
-- Kafdrop UI: ``https://kafdrop-summit-efd.lsst.codes:30828``
+- Kafdrop UI: ``https://kafdrop-summit-efd.lsst.codes``
 
 .. note::
 
   When deploying the SAL Kafka producers on Kubernetes use the internal address for the Kafka broker: ``cp-helm-charts-cp-kafka-headless.cp-helm-charts:9092``.
 
 
-Tucson Test Stand EFD
----------------------
+LDF
+---
+
+Instance running at NCSA (stable cluster). It has a replica of the Summit EFD data.
+
+Intended audience: Everyone in the project.
+
+- Chronograf: ``https://lsst-chronograf-efd.ncsa.illinois.edu``
+- InfluxDB HTTP API: ``https://lsst-influxdb-efd.ncsa.illinois.edu``
+- Confluent Schema Registry: ``https://lsst-schema-registry-efd.ncsa.illinois.edu``
+- Kafka Broker: ``cp-helm-charts-cp-kafka-headless.cp-helm-charts:9092``
+
+
+Tucson Test Stand (TTS)
+-----------------------
 
 Standalone instance running at the Tucson Test Stand.
 
@@ -113,34 +126,9 @@ Intended audience: Telescope and Site team.
 
 .. _LDF EFD:
 
-LDF EFD
--------
 
-Instance running at NCSA (stable cluster). It has a replica of the Summit EFD data.
-
-Intended audience: Everyone in the project.
-
-- Chronograf: ``https://lsst-chronograf-efd.ncsa.illinois.edu``
-- InfluxDB HTTP API: ``https://lsst-influxdb-efd.ncsa.illinois.edu``
-- Confluent Schema Registry: ``https://lsst-schema-registry-efd.ncsa.illinois.edu``
-- Kafka Broker: ``cp-helm-charts-cp-kafka-headless.cp-helm-charts:9092``
-
-
-LDF EFD on int
---------------
-
-Instance running at NCSA (int cluster) for development and integration tests.
-
-Intended audience: SQuaRE team.
-
-- Chronograf: ``https://lsst-chronograf-int-efd.ncsa.illinois.edu``
-- InfluxDB HTTP API: ``https://lsst-influxdb-int-efd.ncsa.illinois.edu``
-- Confluent Schema Registry: ``https://lsst-schema-registry-int-efd.ncsa.illinois.edu``
-- Kafka Broker: ``cp-helm-charts-cp-kafka-headless.cp-helm-charts:9092``
-
-
-Base EFD
---------
+Base Test Stand (BTS)
+---------------------
 
 Standalone instance running at the Base facility (Chile) (Kueyen cluster).
 
@@ -151,22 +139,6 @@ Intended audience: Commissioning and Science Verification teams.
 - Confluent Schema Registry: ``https://schema-registry-base-efd.lsst.codes``
 - Kafka Broker: ``cp-helm-charts-cp-kafka-headless.cp-helm-charts:9092``
 - Kafdrop UI: ``https://kafdrop-base-efd.lsst.codes``
-
-
-Sandbox EFD
------------
-
-Standalone instance at Google Cloud Platform for development. Not currently deployed, but can be deployed on demand.
-
-Intended audience: Anyone who needs an EFD environment for development and testing.
-For example, this instance has been used by the T&S team to test SAL Kafka producer deployments.
-
-..
-  - Chronograf: ``https://chronograf-sandbox-efd.lsst.codes``
-  - InfluxDB HTTP API: ``https://influxdb-sandbox-efd.lsst.codes``
-  - Confluent Schema Registry: ``https://schema-registry-sandbox-efd.lsst.codes``
-  - Kafka Broker: ``cp-helm-charts-cp-kafka-headless.cp-helm-charts:9092``
-  - Kafdrop UI: ``https://kafdrop-sandbox-efd.lsst.codes``
 
 
 Introduction

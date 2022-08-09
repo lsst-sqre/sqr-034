@@ -22,7 +22,7 @@ authors:
 # Current document revision date, YYYY-MM-DD
 # Only set this field if you need to manually fix the revision date;
 # the revision date is obtained from the HEAD Git commit otherwise.
-last_revised: '2021-09-09'
+last_revised: '2022-07-09'
 
 # Version. Use semantic versioning, e.g., 1.0.0, including .dev, as necessary.
 # This version string should correspond to the git tag when the document is
@@ -37,7 +37,7 @@ last_revised: '2021-09-09'
 copyright: '2021, Association of Universities for Research in Astronomy'
 
 # Description. A short, 1-2 sentence statemement used by document indices.
-description: 'Describe the EFD architecture, data flow, retention policies, etc'
+description: 'Describe the EFD instances, how to access EFD data, etc'
 
 # Abstract, if available
 # abstract: >
