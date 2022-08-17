@@ -50,12 +50,14 @@ TL;DR
 
 Quick access to EFD data.
 
+The main entry points are Chronograf or the EFD client from where users can query the EFD.
+
 +-------------------------+-----------------------------------------------------------+--------------------------+
-| **Instance**            | **Chronograf UI**                                         | **EFD  Client**          |
+| **Sasquatch Instance**  | **Chronograf UI**                                         | **EFD  Client Key**      |
 +=========================+===========================================================+==========================+
 | Summit                  | https://chronograf-summit-efd.lsst.codes                  | ``summit_efd``           |
 +-------------------------+-----------------------------------------------------------+--------------------------+
-| LDF                     | https://lsst-chronograf-efd.ncsa.illinois.edu             | ``ldf_stable_efd``       |
+| USDF                    | https://usdf-rsp.slac.stanford.edu/chronograf             | ``usdf_efd``             |
 +-------------------------+-----------------------------------------------------------+--------------------------+
 | Tucson Test Stand (TTS) | https://tucson-teststand.lsst.codes/chronograf            | ``tucson_teststand_efd`` |
 +-------------------------+-----------------------------------------------------------+--------------------------+
@@ -67,29 +69,52 @@ Quick access to EFD data.
   If you need help, please drop a line on the ``#com-square-support`` LSSTC Slack channel.
 
 
-EFD instances
-=============
+Chronograf
+----------
 
-In this section we describe the EFD instances, their use, and how to connect to them.
+Chronograf is the UI for creating dashboards and exploring time-series data.
 
-The main entry points are `Chronograf`_ or the `EFD client`_ from where users can query the EFD.
+Learn more from the `Chronograf documentation`_.
 
-Other services available include the InfluxDB HTTP API, Schema Registry, Kafka brokers, and the Kafdrop UI.
+.. _Chronograf documentation: https://docs.influxdata.com/chronograf/v1.9
 
-.. _Chronograf: https://docs.influxdata.com/chronograf/v1.8
-.. _EFD Client: https://efd-client.lsst.io
+EFD Client
+----------
+
+EFD client is a Python client to access EFD data from the RSP notebook aspect.
+
+Instantiate the EFD client using:
+
+.. code::
+
+   from lsst_efd_client import EfdClient
+   efd = EfdClient('usdf_efd')
+
+   await efd.get_topics()
+
+Learn more about the helper methods implemented from the `EFD client documentation`_.
+
+.. _EFD client documentation: https://efd-client.lsst.io
+
+
+Sasquatch Instances
+===================
+
+In this section we describe the Sasquatch instances that host the EFD.
+
+In addition to Chronograf and the EFD client, other services available include the InfluxDB HTTP API, Schema Registry, Kafka broker, and the Kafdrop UI.
 
 
 Summit
 ------
 
-Instance running at the Summit (Chile). The Summit EFD data is also replicated to the LDF EFD for project wide access (see :ref:`LDF EFD`).
+Instance running at the Summit (Chile). The Summit EFD data is also replicated to the USDF instance for project wide access.
 
-Intended audience: Commissioning and Science Verification teams.
+Intended audience: Observers and Commissioning team.
 
 - Chronograf: ``https://chronograf-summit-efd.lsst.codes``
 - InfluxDB HTTP API: ``https://influxdb-summit-efd.lsst.codes``
-- Schema Registry: ``https://schema-registry-summit-efd.lsst.codes`
+- Schema Registry: ``https://schema-registry-summit-efd.lsst.codes``
 - Kafka Broker: ``kafka-0-summit-efd.lsst.codes:31090``
 - Kafdrop UI: ``https://kafdrop-summit-efd.lsst.codes``
 
@@ -98,17 +123,18 @@ Intended audience: Commissioning and Science Verification teams.
   When deploying the SAL Kafka producers on Kubernetes use the internal address for the Kafka broker: ``cp-helm-charts-cp-kafka-headless.cp-helm-charts:9092``.
 
 
-LDF
----
+USDF
+----
 
-Instance running at NCSA (stable cluster). It has a replica of the Summit EFD data.
+Instance running at SLAC. It has a replica of the Summit EFD data.
 
-Intended audience: Everyone in the project.
+Intended audience: Project staff.
 
-- Chronograf: ``https://lsst-chronograf-efd.ncsa.illinois.edu``
-- InfluxDB HTTP API: ``https://lsst-influxdb-efd.ncsa.illinois.edu``
-- Confluent Schema Registry: ``https://lsst-schema-registry-efd.ncsa.illinois.edu``
-- Kafka Broker: ``cp-helm-charts-cp-kafka-headless.cp-helm-charts:9092``
+- Chronograf: ``https://usdf-rsp.slac.stanford.edu/chronograf``
+- InfluxDB HTTP API: ``https://usdf-rsp.slac.stanford.edu/influxdb``
+- Confluent Schema Registry: ``http://sasquatch-schema-registry.sasquatch:8081``
+- Kafka Broker: ``sasquatch-kafka-brokers.sasquatch``
+- Kafdrop UI: ``https://usdf-rsp.slac.stanford.edu/kafdrop``
 
 
 Tucson Test Stand (TTS)
@@ -116,7 +142,7 @@ Tucson Test Stand (TTS)
 
 Standalone instance running at the Tucson Test Stand.
 
-Intended audience: Telescope and Site team.
+Intended audience: Telescope & Site team.
 
 - Chronograf: ``https://tucson-teststand.lsst.codes/chronograf``
 - InfluxDB HTTP API: ``https://influxdb-tucson-teststand-efd.lsst.codes``
@@ -132,7 +158,7 @@ Base Test Stand (BTS)
 
 Standalone instance running at the Base facility (Chile) (Kueyen cluster).
 
-Intended audience: Commissioning and Science Verification teams.
+Intended audience: Telescope & Site team.
 
 - Chronograf: ``https://chronograf-base-efd.lsst.codes``
 - InfluxDB HTTP API: ``https://influxdb-base-efd.lsst.codes``
