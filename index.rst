@@ -55,7 +55,7 @@ The main entry points are Chronograf or the EFD client from where users can quer
 +-------------------------+-----------------------------------------------------------+--------------------------+
 | **Sasquatch Instance**  | **Chronograf UI**                                         | **EFD  Client Key**      |
 +=========================+===========================================================+==========================+
-| Summit                  | https://chronograf-summit-efd.lsst.codes                  | ``summit_efd``           |
+| Summit                  | https://summit-lsp.lsst.codes/chronograf                  | ``summit_efd``           |
 +-------------------------+-----------------------------------------------------------+--------------------------+
 | USDF                    | https://usdf-rsp.slac.stanford.edu/chronograf             | ``usdf_efd``             |
 +-------------------------+-----------------------------------------------------------+--------------------------+
@@ -112,11 +112,11 @@ Instance running at the Summit (Chile). The Summit EFD data is also replicated t
 
 Intended audience: Observers and Commissioning team.
 
-- Chronograf: ``https://chronograf-summit-efd.lsst.codes``
-- InfluxDB HTTP API: ``https://influxdb-summit-efd.lsst.codes``
-- Schema Registry: ``https://schema-registry-summit-efd.lsst.codes``
-- Kafka Broker: ``kafka-0-summit-efd.lsst.codes:31090``
-- Kafdrop UI: ``https://kafdrop-summit-efd.lsst.codes``
+- Chronograf: ``https://summit-lsp.lsst.codes/chronograf``
+- InfluxDB HTTP API: ``https://summit-lsp.lsst.codes/influxdb``
+- Schema Registry: ``http://sasquatch-schema-registry.sasquatch:8081``
+- Kafka Broker: ``sasquatch-kafka-brokers.sasquatch``
+- Kafdrop UI: ``https://tucson-teststand.lsst.codes/kafdrop``
 
 .. note::
 
@@ -145,7 +145,7 @@ Standalone instance running at the Tucson Test Stand.
 Intended audience: Telescope & Site team.
 
 - Chronograf: ``https://tucson-teststand.lsst.codes/chronograf``
-- InfluxDB HTTP API: ``https://influxdb-tucson-teststand-efd.lsst.codes``
+- InfluxDB HTTP API: ``https://tucson-teststand.lsst.codes/influxdb``
 - Schema Registry: ``http://sasquatch-schema-registry.sasquatch:8081``
 - Kafka Broker: ``sasquatch-kafka-brokers.sasquatch``
 - Kafdrop UI: ``https://tucson-teststand.lsst.codes/kafdrop``
