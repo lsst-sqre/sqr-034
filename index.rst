@@ -47,288 +47,377 @@
 
 TL;DR
 =====
+The EFD is managed by Sasquatch, a service of the `Rubin Science Platform`_ for recording, displaying, and alerting on Rubin’s engineering data.
+Sasquatch is currently deployed at the Summit, USDF and test stands through `Phalanx`_.
 
-Quick access to EFD data.
+The main entry points are the Chronograf UI and the EFD Python client from where users can query the EFD database.
 
-The main entry points are Chronograf or the EFD client from where users can query the EFD.
-
-+-------------------------+-----------------------------------------------------------+--------------------------+
-| **Sasquatch Instance**  | **Chronograf UI**                                         | **EFD  Client Key**      |
-+=========================+===========================================================+==========================+
-| Summit                  | https://summit-lsp.lsst.codes/chronograf                  | ``summit_efd``           |
-+-------------------------+-----------------------------------------------------------+--------------------------+
-| USDF                    | https://usdf-rsp.slac.stanford.edu/chronograf             | ``usdf_efd``             |
-+-------------------------+-----------------------------------------------------------+--------------------------+
-| Tucson Test Stand (TTS) | https://tucson-teststand.lsst.codes/chronograf            | ``tucson_teststand_efd`` |
-+-------------------------+-----------------------------------------------------------+--------------------------+
-| Base Test Stand (BTS)   | https://chronograf-base-efd.lsst.codes                    | ``base_efd``             |
-+-------------------------+-----------------------------------------------------------+--------------------------+
++-------------------------+-----------------------------------------------------------+--------------------------+----------------+
+| **Sasquatch Instance**  | **Chronograf UI**                                         | **EFD  Client alias**    | **VPN access** |
++=========================+===========================================================+==========================+================+
+| Summit                  | https://summit-lsp.lsst.codes/chronograf                  | ``summit_efd``           | Chile VPN      |
++-------------------------+-----------------------------------------------------------+--------------------------+----------------+
+| USDF                    | https://usdf-rsp.slac.stanford.edu/chronograf             | ``usdf_efd``             | Not required   |
++-------------------------+-----------------------------------------------------------+--------------------------+----------------+
+| USDF dev                | https://usdf-rsp-dev.slac.stanford.edu/chronograf         | ``usdf_efd_dev``         | Not required   |
++-------------------------+-----------------------------------------------------------+--------------------------+----------------+
+| Tucson test stand (TTS) | https://tucson-teststand.lsst.codes/chronograf            | ``tucson_teststand_efd`` | NOIRLab VPN    |
++-------------------------+-----------------------------------------------------------+--------------------------+----------------+
+| Base test stand (BTS)   | https://base-lsp.lsst.codes/chronograf                    | ``base_efd``             | Chile VPN      |
++-------------------------+-----------------------------------------------------------+--------------------------+----------------+
 
 .. note::
 
   If you need help, please drop a line on the ``#com-square-support`` LSSTC Slack channel.
 
 
-Chronograf
-----------
-
-Chronograf is the UI for creating dashboards and exploring time-series data.
-
-Learn more from the `Chronograf documentation`_.
-
-.. _Chronograf documentation: https://docs.influxdata.com/chronograf/v1.9
-
-EFD Client
-----------
-
-EFD client is a Python client to access EFD data from the RSP notebook aspect.
-
-Instantiate the EFD client using:
-
-.. code::
-
-   from lsst_efd_client import EfdClient
-   efd = EfdClient('usdf_efd')
-
-   await efd.get_topics()
-
-Learn more about the helper methods implemented from the `EFD client documentation`_.
-
-.. _EFD client documentation: https://efd-client.lsst.io
+.. _Rubin Science Platform: https://rsp.lsst.io
+.. _Phalanx: https://phalanx.lsst.io
 
 
 Sasquatch Instances
 ===================
 
-In this section we describe the Sasquatch instances that host the EFD.
+In this section we describe the Sasquatch instances that host the EFD database.
 
-In addition to Chronograf and the EFD client, other services available include the InfluxDB HTTP API, Schema Registry, Kafka broker, and the Kafdrop UI.
+In addition to Chronograf and the EFD client, other services available are the InfluxDB HTTP API, the Kafdrop UI and the Kafka brokers, the Kafka bootstrap server, and the Kafka REST proxy API.
 
 
 Summit
 ------
 
-Instance running at the Summit (Chile). The Summit EFD data is also replicated to the USDF instance for project wide access.
+Production instance running at the Summit (Chile).
+The Summit EFD data is replicated to the USDF production instance for project wide access.
 
 Intended audience: Observers and Commissioning team.
 
 - Chronograf: ``https://summit-lsp.lsst.codes/chronograf``
 - InfluxDB HTTP API: ``https://summit-lsp.lsst.codes/influxdb``
-- Schema Registry: ``http://sasquatch-schema-registry.sasquatch:8081``
-- Kafka Broker: ``sasquatch-kafka-brokers.sasquatch``
-- Kafdrop UI: ``https://tucson-teststand.lsst.codes/kafdrop``
+- Kafdrop UI: ``https://summit-lsp.lsst.codes/kafdrop``
+- Kafka brokers:
 
-.. note::
+  - ``sasquatch-summit-kafka-0.lsst.codes``
+  - ``sasquatch-summit-kafka-1.lsst.codes``
+  - ``sasquatch-summit-kafka-2.lsst.codes``
 
-  When deploying the SAL Kafka producers on Kubernetes use the internal address for the Kafka broker: ``cp-helm-charts-cp-kafka-headless.cp-helm-charts:9092``.
-
+- Kafka bootstrap server: ``sasquatch-summit-kafka-bootstrap.lsst.codes``
+- Kafka REST proxy API: ``https://summit-lsp.lsst.codes/sasquatch-rest-proxy``
 
 USDF
 ----
 
-Instance running at SLAC. It has a replica of the Summit EFD data.
+Production instance running at SLAC.
+It has a replica of the Summit EFD data.
 
 Intended audience: Project staff.
 
 - Chronograf: ``https://usdf-rsp.slac.stanford.edu/chronograf``
 - InfluxDB HTTP API: ``https://usdf-rsp.slac.stanford.edu/influxdb``
-- Confluent Schema Registry: ``http://sasquatch-schema-registry.sasquatch:8081``
-- Kafka Broker: ``sasquatch-kafka-brokers.sasquatch``
 - Kafdrop UI: ``https://usdf-rsp.slac.stanford.edu/kafdrop``
+- Kafka brokers:
+  (not yet available)
+- Kafka boostrap server:
+  (not yet available)
+- Kafka REST proxy API:
+  - ``https://usdf-rsp.slac.stanford.edu/sasquatch-rest-proxy``
+
+
+USDF dev
+--------
+
+Development instance running at SLAC.
+It has a replica of the Tucson test stand instance.
+
+Intended audience: Project staff.
+
+- Chronograf: ``https://usdf-rsp-dev.slac.stanford.edu/chronograf``
+- InfluxDB HTTP API: ``https://usdf-rsp-dev.slac.stanford.edu/influxdb``
+- Kafdrop UI: ``https://usdf-rsp-dev.slac.stanford.edu/kafdrop``
+- Kafka brokers:
+  (not yet available)
+- Kafka boostrap server:
+  (not yet available)
+- Kafka REST proxy API:
+  - ``https://usdf-rsp-dev.slac.stanford.edu/sasquatch-rest-proxy``
 
 
 Tucson Test Stand (TTS)
 -----------------------
 
-Standalone instance running at the Tucson Test Stand.
+Development instance running at the Tucson test stand.
 
 Intended audience: Telescope & Site team.
 
 - Chronograf: ``https://tucson-teststand.lsst.codes/chronograf``
 - InfluxDB HTTP API: ``https://tucson-teststand.lsst.codes/influxdb``
-- Schema Registry: ``http://sasquatch-schema-registry.sasquatch:8081``
-- Kafka Broker: ``sasquatch-kafka-brokers.sasquatch``
 - Kafdrop UI: ``https://tucson-teststand.lsst.codes/kafdrop``
-
-.. _LDF EFD:
+- Kafka brokers:
+  - ``sasquatch-tts-kafka-0.lsst.codes``
+  - ``sasquatch-tts-kafka-1.lsst.codes``
+  - ``sasquatch-tts-kafka-2.lsst.codes``
+- Kafka bootstrap server:
+  - ``sasquatch-tts-kafka-bootstrap.lsst.codes``
+- Kafka REST proxy API:
+  - ``https://tucson-teststand.lsst.codes/sasquatch-rest-proxy``
 
 
 Base Test Stand (BTS)
 ---------------------
 
-Standalone instance running at the Base facility (Chile) (Kueyen cluster).
+Standalone instance running at the Base facility (Chile).
 
 Intended audience: Telescope & Site team.
 
-- Chronograf: ``https://chronograf-base-efd.lsst.codes``
-- InfluxDB HTTP API: ``https://influxdb-base-efd.lsst.codes``
-- Confluent Schema Registry: ``https://schema-registry-base-efd.lsst.codes``
-- Kafka Broker: ``cp-helm-charts-cp-kafka-headless.cp-helm-charts:9092``
-- Kafdrop UI: ``https://kafdrop-base-efd.lsst.codes``
-
+(not yet available)
 
 Introduction
 ============
 
-In :dmtn:`082` :cite:`DMTN-082`, we present the high level architecture to enable real-time analysis of the Engineering and Facilities Database (EFD) data from the Rubin Science Platform (RSP).
+In this technote, we describe the Engineering and Facilities Database (EFD) and tools to access the data.
 
-In :sqr:`029` :cite:`SQR-029`, we describe a prototype implementation of the EFD based on `Kafka`_  and `InfluxDB`_.
-We also report results of live tests with the `Service Abstraction Layer`_ (SAL) including latency characterization and performance evaluation with high-frequency telemetry.
+The main EFD instance runs at the Summit recording observatory telemetry, events and commands enabling real-time monitoring during the observations.
 
-In this technote, we describe the EFD operation with an instance at the Summit, to store the data and to enable real-time analysis during observations, and an instance at the LSST Data Facility (LDF) to replicate Summit EFD data.
+At the Summit the nominal retention period for the EFD data is 30 days.
 
-The LDF EFD is meant to be a centralized place where Rubin Observatory staff can connect and perform their analysis without interfering with the Summit EFD which is meant to be used by the observers.
+The EFD data is also replicated to the USDF in quasi realtime (within a few seconds).
 
-The current architecture based on Kafka and InfluxDB.
+The USDF EFD is meant to be the place Rubin Observatory staff can connect and perform their analysis without interfering with the Summit operations, including trending analysis on historical data.
+
 
 .. figure:: /_static/efd_summit.svg
-   :name: EFD components for the Summit or TestStand instance.
+   :name: EFD components for the Summit/test stand instances.
    :target: _static/efd_summit.svg
 
-   EFD components for the Summit or TestStand instance.
+   A typical Sasquatch deployment with Kafka, InfluxDB Sink connector, InfluxDB, Chronograf and Kapacitor components.
 
-A TestStand deployment has the same components of the Summit deployment: Kafka, InfluxDB, InfluxDB Sink connector, Chronograf and Kapacitor. SAL Kafka producers are managed by the T&S team.
-
-For the LDF EFD, we have in addition the MirrorMaker 2 connectors for the EFD replication service, the Aggregator, and other connectors to write data to Parquet files and to the Consolidated Database (PostgreSQL).
-
-.. figure:: /_static/efd_ldf.svg
-   :name: LDF EFD components.
-   :target: _static/efd_ldf.svg
-
-   LDF EFD components.
-
-In the following sections we describe the new components added to the EFD architecture, we discuss data replication, retention policies, and options for long-term storage of the EFD data.
-
-.. _Service Abstraction Layer: https://docushare.lsstcorp.org/docushare/dsweb/Get/Document-21527
-.. _Kafka: https://www.confluent.io/
-.. _InfluxDB: https://www.influxdata.com/
+See :sqr:`068` :cite:`SQR-068` for more information on the Sasquatch architecture.
 
 
 SAL Kafka producer
 ==================
 
-The `SAL Kafka`_ producers forward DDS messages from one or more SAL components to Kafka.
-For each DDS topic, SAL Kafka introspects the OpenSplice IDL, creates the Avro schema and uploads it to the Kafka Schema Registry dynamically.
-The Kafka brokers store the Avro messages, and consumers use the Avro schemas to deserialize them.
+The `SAL Kafka`_ producers forward messages from SAL components (CSCs) to Kafka.
 
-SAL Kafka was an important addition to the EFD architecture, it decouples the EFD from the SAL XML schemas and introduces Avro as the interface between the DDS middleware and the EFD.
+Each `CSC`_ has a number of command, events and telemetry topics that are mapped to Kafka topics.
+
+In Sasquatch, the Kafdrop UI can be used to browse the Kafka topics, for example https://summit-lsp.lsst.codes/kafdrop.
 
 .. _SAL Kafka: https://ts-salkafka.lsst.io/
+.. _CSC: https://ts-xml.lsst.io/index.html#csc-table
 
 
-Kafka Connect manager
-=====================
+InfluxDB Sink connector
+=======================
 
-Another addition to the EFD architecture is the `Kafka Connect manager`_.
-The Kafka Connect manager is the component responsible for managing the Kafka Connect REST interface.
-It is used to deploy the different connectors to the EFD.
-For connectors that are not dynamic like the InfluxDB Sink and the JDBc Sink connectors, the Kafka Connect manager can automatically update the connector configuration when new topics are created in Kafka.
+The InfluxDB Sink connector is the component responsible for consuming the Kafka topics and writing the data to InfluxDB, a time series database.
 
-.. _Kafka Connect manager: https://kafka-connect-manager.lsst.io
+`kafka-connect-manager`_ manages the InfluxDB Sink connector and other connectors in Sasquatch.
 
-The EFD replication service
-===========================
-
-:sqr:`050` :cite:`SQR-050` describes the EFD replication service. MirrorMaker 2 is the component responsible for that. In the EFD setup, the MirrorMaker 2 connectors run on the LDF EFD and pull Kafka records and topic configuration from the Summit EFD.
-
-New topics and schemas at the Summit EFD are automatically detected and replicated to the LDF EFD.
-As throughput increases, we can add more partitions to the Kafka topics and the connector, running on the Kafka Connect Framework, can scale up to accommodate the increased load.
-Replicating topics and schemas across the two sites also protects the EFD against data loss.
-
-Chronograf dashboards and Kapacitor alert rules are not yet part of the replication service.
-
-Consumers at the Summit only read data from the Summit and consumers at the LDF only read data from the LDF, with the exception of the Mirror Maker 2 mirror source connector.
-Within the Kafka cluster, we have fault tolerance by replicating the Kafka topics across three brokers (default set up).
-
-If the InfluxDB instance at the Summit falls over, the InfluxDB instance at the LDF can still be used to access the replicated data.
-However, there is no automatic mechanism to connect to the LDF EFD.
-
-Data replication enables unrestricted access to EFD data from the LDF.
-It also provides long-term storage and a live backup of the Summit EFD data.
-
-.. _replicate data from and Summit EFD to the LDF EFD: https://sqr-050.lsst.io
-
-.. _retention-policy:
-
-Downsampling and data retention
-===============================
-
-The EFD writes thousands of topics on a wide range of frequencies. Querying the EFD raw data on large time windows can be resource intensive.
-
-A natural solution is to downsample the raw data and store one or two versions of lower resolution data for extended periods.
-In InfluxDB, it is possible to configure multiple retention policies.
-For instance, at the Summit we can have one month of raw data, three months of intermediate resolution data, and perhaps one year of low resolution data.
-When the retention policy is enforced, data older than the retention period is automatically deleted.
-The result is a moving window on the most recent data.
-
-Downsampling is efficiently done inside InfluxDB using Flux tasks that can be scheduled during daytime if necessary to not interfere with the observations.
-These extra retention policies are not replicated to the LDF EFD but similar retention policies can be configured there as well to query the data efficiently over extended periods.
-
-Real-time analysis of the EFD data could potentially include statistical models for anomaly detection and forecasting.
-For example, InfluxDB implements a `built-in multiplicative Holt-Winters`_  function to generate predictions on time series data.
-
-At the Summit, if we store one month of raw data, that's roughly 0.8% of the data collected over the 10-year survey.
-Whether that's sufficient to build a statistical model or not it depends on the long term trends and seasonality of the time-series we are analyzing.
-An interesting possibility of the EFD architecture is to build the statistical models from historical data at LDF and apply these models to the Summit.
+.. _kafka-connect-manager: https://kafka-connect-manager.lsst.io
 
 
-.. _built-in multiplicative Holt-Winters: https://www.influxdata.com/blog/how-to-use-influxdbs-holt-winters-function-for-predictions
+InfluxDB
+========
+
+InfluxDB is an open-source `time series database`_ optimized for efficient storage and analysis of time series data.
+
+A good overview of InfluxDB and how it compares to a more tradional relational database is given `here`_.
+
+InfluxDB organizes the data in measurements (equivalent to a table in a relational database), fields (metrics and events) and tags (metadata around metrics and events).
+
+The important concept for the EFD is that SAL topics are mapped to InfluxDB measurements and all the fields in a SAL topic are mapped to InfluxDB fields.
+Essentially we have one time series for each SAL topic, where the point in that time series corresponds to the field set of the SAL topic.
+
+The timestamp used to index the EFD database in InfluxDB is the ``private_efdStamp`` field which corresponds to the SAL ``private_sndStamp`` field converted from TAI to UTC.
+
+In the EFD we write timestamps with microsseconds precision, which seems exagerated but that's important to differentiate events that are very close to each other (e.g. debug events).
+
+InfluxDB provides an SQL-like query language called `InfluxQL`_ and a more powerful data scripting language called `Flux`_.
+Both languages can be used in Chronograf for data exploration and for creating dashboards.
+
+.. _time series database: https://www.influxdata.com/time-series-database/
+.. _here: https://docs.influxdata.com/influxdb/v1.8/concepts/crosswalk/
+.. _InfluxQL: https://docs.influxdata.com/influxdb/v1.8/query_language/
+.. _Flux: https://docs.influxdata.com/influxdb/v1.8/flux/
 
 
-.. _aggregator:
+The EFD client
+--------------
 
-The EFD transformation service
-==============================
+The EFD client is a Python client to access EFD data from a notebook in the RSP.
 
-As proposed in :dmtn:`082` :cite:`DMTN-082`, RSP users are expected to generally access telemetry data at a frequency closer to the cadence of the observations.
-It proposes that "all telemetry topics sampled with a frequency higher than 1Hz are (1) downsampled at 1Hz and (2) aggregated to 1Hz using  ``min``, ``max``, ``mean``, ``median`` ``stdev`` statistics".
-Commands and event topics should not be aggregated as they are typically low-frequency and can be read directly from the raw EFD data sources.
+For, example a the Summit you can instantiate the EFD client using:
 
-:sqr:`058` :cite:`SQR-058` describes the EFD transformation service. It uses the Aggregator to produce a new set of aggregated telemetry topics in Kafka that can be consumed by the different connectors and stored in different formats (Parquet, InfluxDB and PostgreSQL).
+.. code::
 
-.. figure:: /_static/kafka-aggregator.svg
-   :name: Kafka Aggregator
-   :target: _static/kafka-aggregator.svg
+   from lsst_efd_client import EfdClient
+   efd = EfdClient('summit')
 
-   Kafka Aggregator based on the Faust stream processing library.
+   await efd.get_topics()
+
+where `summit` is the alias to connect to the EFD database at the Summit.
+
+Learn more about the helper methods implemented from the `EFD client documentation`_ and from the example notebooks.
+
+.. _EFD client documentation: https://efd-client.lsst.io
 
 
-The `Kafka Aggregator <https://kafka-aggregator.lsst.io/>`_ is implemented in `Faust`_, a Python stream processing library. Faust supports `Avro serialization <https://github.com/marcosschroh/faust-docker-compose-example#avro-schemas-custom-codecs-and-serializers>`_ and multiple instances of a Faust worker can be started independently to distribute stream processing across nodes or CPU cores.
+Example notebooks
+-----------------
+
+-
 
 
-.. _Faust: https://faust.readthedocs.io/en/latest/index.html
-
-Options for long-term storage
-=============================
-
-In the RSP we can access EFD data from InfluxDB directly using the EFD client or from data stored in Parquet files.
-Parquet is compatible with  `Dask`_, a library used to scale computations across multiple worker nodes.
-The Confluent Amazon S3 Sink connector `supports Parquet on S3`_.
-From the connector configuration, it is possible to partition data based on time. We might want to store both the raw EFD data and the aggregated EFD data in Parquet files.
-This would serve as a live backup of the full raw EFD data.
-
-We plan on storing the aggregated EFD data in the LDF consolidated database, which is convenient to make joins with the exposure table as discussed in session :ref:`aggregator`. The `Kafka Connect JDBC connector`_ supports connections to several RDBMS implementations.
-
-We can store the raw data for more extended periods at the LDF than in the Summit.
-We plan on tuning multiple retention policies in InfluxDB and store lower resolution versions of the data at the LDF and at the Summit, as discussed in session :ref:`retention-policy`.
-
-.. _Dask: https://dask.org/
-.. _Kafka Connect JDBC connector: https://www.confluent.io/hub/confluentinc/kafka-connect-jdbc
-.. _supports Parquet on S3: <https://docs.confluent.io/current/connect/kafka-connect-s3/>
-
-Monitoring
+Chronograf
 ==========
 
-For monitoring the Kafka cluster, we use the Kafdrop UI and also monitor JMX metrics exposed by the Confluent Platform.
-JMX is a common technology in Java to export application metrics.
-Confluent Kafka components use JMX APIs to collect application and JVM metrics and expose them over HTTP in a format that Prometheus understands and can scrape.
-We then use the Telegraf input Prometheus plugin to write these metrics to InfluxDB and create a Kafka monitoring dashboard in Chronograf.
+Chronograf is the main UI for data exploration, for creating dashboards and alerts on the EFD data.
 
-For monitoring InfluxDB itself, we collect system and InfluxDB metrics using Telegraf and create alert rules with `Kapacitor`_.
 
-We plan on ingesting the EFD logs into the logging infrastructure at the Summit and IDF too.
+.. `Chronograf documentation`_.
+
+.. _Chronograf documentation: https://docs.influxdata.com/chronograf/v1.9
+
+
+Chronograf shared account
+-------------------------
+
+There is a shared account ``chronograf-viewer`` user that is meant to be used for the control room displays, the password can be found in LSST IT/SQuaRE 1password or
+ask for it on our support channel ``#com-square-support`` on Slack.
+
+
+The explore tool
+----------------
+
+
+.. For better performance queries must be constrained by time.
+
+.. Template variables dashboardLowerLimit and dashboardUpperLimit
+
+
+Creating a new dashboard
+------------------------
+
+We recommend following the Chronograf documentation for `creating a new dashboard`_
+
+.. _creating a new dashboard: https://docs.influxdata.com/chronograf/v1.10/guides/create-a-dashboard/#build-a-dashboard
+
+
+In addition to that, this section provides some extra tips that we learned by using Chronograf in the context of Rubin.
+
+
+Visualization types
+^^^^^^^^^^^^^^^^^^^
+
+See the `visualization types`_ avaibale in Chronograf.
+
+.. _visualization types: https://docs.influxdata.com/chronograf/v1.10/guides/visualization-types/
+
+
+Time series of physical variables like temperature, pressure, etc are correlated data points, in this case plot the data using use a line graph or a line graph + single stat.
+The single stat always corresponds to the most recent value in the time series.
+
+If the data points are uncorrelated (events) then a bar chart is a better option over a line chart.
+
+The best way to identify the best visualization type is by questioning the data.
+For example, bar charts are useful to visualize gaps in the data.
+
+
+Adding multiple graphs to one chart
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Sometimes it is useful to display multiple time series in a single chart, each time-serie can be added as and indepented query in Chronograf.
+
+
+Multiple charts and time axis alignment
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+-
+
+
+Using dashboard template variables
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When creating a dashboard, you can use either predefined template variables or custom template variables to parametrize your queries and visualizations.
+
+https://docs.influxdata.com/chronograf/v1.10/guides/dashboard-template-variables/
+
+Using Flux for creating more advanced dashboards
+------------------------------------------------
+
+-
+
+Visualizing log events
+----------------------
+
+And easy way to visualize log messages from events and correlate them with a time series chart is by using a linked table.
+
+Tables are linked with charts via the time column.
+
+
+.. note::
+
+   Chronograf provides a `log viewer`_ tool that could be used to visualize CSC log events.
+   To use the log viewer tool in Chronograf, data needs to be recorded in a specific measusrement and follow the syslog data format.
+   In DM-31618 we explore this possibility.
+
+
+.. _log viewer: https://docs.influxdata.com/chronograf/v1.10/guides/analyzing-logs/
+
+
+
+Adding annotations
+------------------
+
+.. note::
+
+   The log messages in every event topic could be automatically added as annotations (markers) on the time series.
+   That would be a nice way to correlate events and telemetry and would be very useful for debugging.
+   The `annotator` service would consume the event topics and write them as annotations in Chronograf, and a tag system would allow to filter annotatoins by CSC or event type, for example.
+
+Extras
+------
+
+`Presentation mode`_ allows you to view Chronograf dashboards in full screen.
+
+.. _Presentation mode: https://docs.influxdata.com/chronograf/v1.10/guides/presentation-mode/
+
+
+Known limitations
+-----------------
+
+- There's solution yet to display units in Chronograf charts other than manually adding a suffix to the y-axis value.
+  Units could be obtained from the topic schema, currently they can be inspected using the EFD client only.
+
+- When adding multiple graphs to one chart, it is not possible to combine different visualization types.
+
+
+Creating alert rules
+--------------------
+
 
 .. _Kapacitor: https://docs.influxdata.com/kapacitor
+
+
+
+Monitoring CSC heartbeats
+-------------------------
+
+
+
+EFD data replication
+====================
+
+:sqr:`050` :cite:`SQR-050` describes the EFD data replication from Summit/TTS to USDF.
+MirrorMaker 2 is the component responsible for that.
+
+In the EFD setup, the MirrorMaker 2 source connectors run at the USDF and consume remote Kafka topics at the Summit and TTS.
+
+Avro schemas recorded in the `registry-schemas` topic are also replicated.
+
+If the InfluxDB instance at the Summit falls over, the InfluxDB instance at the USDF can still be used to access the EFD data provided that the replication service is running.
+Note, however, that Chronograf dashboards and Kapacitor alert rules are not part of the this replication service.
+
 
 
 References
