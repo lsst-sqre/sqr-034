@@ -52,19 +52,19 @@ Sasquatch is currently deployed at the Summit, USDF and test stands through `Pha
 
 The main entry points are the Chronograf UI and the EFD Python client from where users can query the EFD database.
 
-+-------------------------+-----------------------------------------------------------+--------------------------+----------------+
-| **Sasquatch Instance**  | **Chronograf UI**                                         | **EFD  Client alias**    | **VPN access** |
-+=========================+===========================================================+==========================+================+
-| Summit                  | https://summit-lsp.lsst.codes/chronograf                  | ``summit_efd``           | Chile VPN      |
-+-------------------------+-----------------------------------------------------------+--------------------------+----------------+
-| USDF                    | https://usdf-rsp.slac.stanford.edu/chronograf             | ``usdf_efd``             | Not required   |
-+-------------------------+-----------------------------------------------------------+--------------------------+----------------+
-| USDF dev                | https://usdf-rsp-dev.slac.stanford.edu/chronograf         | ``usdf_efd_dev``         | Not required   |
-+-------------------------+-----------------------------------------------------------+--------------------------+----------------+
-| Tucson test stand (TTS) | https://tucson-teststand.lsst.codes/chronograf            | ``tucson_teststand_efd`` | NOIRLab VPN    |
-+-------------------------+-----------------------------------------------------------+--------------------------+----------------+
-| Base test stand (BTS)   | https://base-lsp.lsst.codes/chronograf                    | ``base_efd``             | Chile VPN      |
-+-------------------------+-----------------------------------------------------------+--------------------------+----------------+
++------------------------+---------------------------------------------------+--------------------------+----------------+
+| **Sasquatch Instance** | **Chronograf UI**                                 | **EFD Client alias**     | **VPN access** |
++========================+===================================================+==========================+================+
+| :ref:`Summit<summit>`  | https://summit-lsp.lsst.codes/chronograf          | ``summit_efd``           | Chile VPN      |
++------------------------+---------------------------------------------------+--------------------------+----------------+
+| :ref:`USDF<usdf>`      | https://usdf-rsp.slac.stanford.edu/chronograf     | ``usdf_efd``             | Not required   |
++------------------------+---------------------------------------------------+--------------------------+----------------+
+| :ref:`USDF dev<usdfd>` | https://usdf-rsp-dev.slac.stanford.edu/chronograf | ``usdf_efd_dev``         | Not required   |
++------------------------+---------------------------------------------------+--------------------------+----------------+
+| :ref:`TTS<tts>`        | https://tucson-teststand.lsst.codes/chronograf    | ``tucson_teststand_efd`` | NOIRLab VPN    |
++------------------------+---------------------------------------------------+--------------------------+----------------+
+| :ref:`BTS<bts>`        | https://base-lsp.lsst.codes/chronograf            | ``base_efd``             | Chile VPN      |
++------------------------+---------------------------------------------------+--------------------------+----------------+
 
 .. note::
 
@@ -82,6 +82,7 @@ In this section we describe the Sasquatch instances that host the EFD database.
 
 In addition to Chronograf and the EFD client, other services available are the InfluxDB HTTP API, the Kafdrop UI and the Kafka brokers, the Kafka bootstrap server, and the Kafka REST proxy API.
 
+.. _summit:
 
 Summit
 ------
@@ -103,6 +104,8 @@ Intended audience: Observers and Commissioning team.
 - Kafka bootstrap server: ``sasquatch-summit-kafka-bootstrap.lsst.codes``
 - Kafka REST proxy API: ``https://summit-lsp.lsst.codes/sasquatch-rest-proxy``
 
+.. _usdf:
+
 USDF
 ----
 
@@ -118,9 +121,9 @@ Intended audience: Project staff.
   (not yet available)
 - Kafka boostrap server:
   (not yet available)
-- Kafka REST proxy API:
-  - ``https://usdf-rsp.slac.stanford.edu/sasquatch-rest-proxy``
+- Kafka REST proxy API: ``https://usdf-rsp.slac.stanford.edu/sasquatch-rest-proxy``
 
+.. _usdfd:
 
 USDF dev
 --------
@@ -137,9 +140,9 @@ Intended audience: Project staff.
   (not yet available)
 - Kafka boostrap server:
   (not yet available)
-- Kafka REST proxy API:
-  - ``https://usdf-rsp-dev.slac.stanford.edu/sasquatch-rest-proxy``
+- Kafka REST proxy API: ``https://usdf-rsp-dev.slac.stanford.edu/sasquatch-rest-proxy``
 
+.. _tts:
 
 Tucson Test Stand (TTS)
 -----------------------
@@ -152,14 +155,16 @@ Intended audience: Telescope & Site team.
 - InfluxDB HTTP API: ``https://tucson-teststand.lsst.codes/influxdb``
 - Kafdrop UI: ``https://tucson-teststand.lsst.codes/kafdrop``
 - Kafka brokers:
+
   - ``sasquatch-tts-kafka-0.lsst.codes``
   - ``sasquatch-tts-kafka-1.lsst.codes``
   - ``sasquatch-tts-kafka-2.lsst.codes``
-- Kafka bootstrap server:
-  - ``sasquatch-tts-kafka-bootstrap.lsst.codes``
-- Kafka REST proxy API:
-  - ``https://tucson-teststand.lsst.codes/sasquatch-rest-proxy``
 
+- Kafka bootstrap server: ``sasquatch-tts-kafka-bootstrap.lsst.codes``
+- Kafka REST proxy API: ``https://tucson-teststand.lsst.codes/sasquatch-rest-proxy``
+
+
+.. _bts:
 
 Base Test Stand (BTS)
 ---------------------
@@ -168,7 +173,19 @@ Standalone instance running at the Base facility (Chile).
 
 Intended audience: Telescope & Site team.
 
-(not yet available)
+- Chronograf: ``https://base-lsp.lsst.codes/chronograf``
+- InfluxDB HTTP API: ``https://base-lsp.lsst.codes/influxdb``
+- Kafdrop UI: ``https://base-lsp.lsst.codes/kafdrop``
+- Kafka brokers:
+
+  - ``sasquatch-base-kafka-0.lsst.codes``
+  - ``sasquatch-base-kafka-1.lsst.codes``
+  - ``sasquatch-base-kafka-2.lsst.codes``
+
+- Kafka bootstrap server: ``sasquatch-base-kafka-bootstrap.lsst.codes``
+- Kafka REST proxy API: ``https://base-lsp.lsst.codes/sasquatch-rest-proxy``
+
+
 
 Introduction
 ============
