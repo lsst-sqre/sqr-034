@@ -59,7 +59,7 @@ The main entry points are the Chronograf UI and the EFD Python client from where
 +------------------------+---------------------------------------------------+--------------------------+----------------+
 | :ref:`USDF<usdf>`      | https://usdf-rsp.slac.stanford.edu/chronograf     | ``usdf_efd``             | Not required   |
 +------------------------+---------------------------------------------------+--------------------------+----------------+
-| :ref:`USDF dev<usdfd>` | https://usdf-rsp-dev.slac.stanford.edu/chronograf | ``usdf_efd_dev``         | Not required   |
+| :ref:`USDF dev<usdfd>` | https://usdf-rsp-dev.slac.stanford.edu/chronograf | ``usdfdev_efd``          | Not required   |
 +------------------------+---------------------------------------------------+--------------------------+----------------+
 | :ref:`TTS<tts>`        | https://tucson-teststand.lsst.codes/chronograf    | ``tucson_teststand_efd`` | NOIRLab VPN    |
 +------------------------+---------------------------------------------------+--------------------------+----------------+
@@ -88,7 +88,7 @@ Summit
 ------
 
 Production instance running at the Summit (Chile).
-The Summit EFD data is replicated to the USDF production instance for project wide access.
+The Summit EFD data is replicated to the USDF production instance.
 
 Intended audience: Observers and Commissioning team.
 
@@ -129,7 +129,7 @@ USDF dev
 --------
 
 Development instance running at SLAC.
-It has a replica of the Tucson test stand instance.
+It has a replica of the Base Test stand instance (and soon Tucson test stand).
 
 Intended audience: Project staff.
 
@@ -148,6 +148,7 @@ Tucson Test Stand (TTS)
 -----------------------
 
 Development instance running at the Tucson test stand.
+The plan is to replicate TTS EFD data to the USDF dev instance.
 
 Intended audience: Telescope & Site team.
 
@@ -170,6 +171,7 @@ Base Test Stand (BTS)
 ---------------------
 
 Standalone instance running at the Base facility (Chile).
+BTS EFD data is replicated to the USDF dev instance.
 
 Intended audience: Telescope & Site team.
 
@@ -268,11 +270,12 @@ For, example a the Summit you can instantiate the EFD client using:
 .. code::
 
    from lsst_efd_client import EfdClient
-   efd = EfdClient('summit')
+   efd = EfdClient('summit_efd')
 
    await efd.get_topics()
 
-where `summit` is the alias to connect to the EFD database at the Summit.
+where `summit_efd` is the alias to the EFD instance at the Summit.
+The EFD client alias uses the `segwarides` service to discover the InfluxDB HTTP API URL and the credentials to connect to the EFD database at the Summit.
 
 Learn more about the helper methods implemented from the `EFD client documentation`_ and from the example notebooks.
 
